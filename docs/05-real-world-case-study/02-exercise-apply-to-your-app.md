@@ -68,7 +68,7 @@
 ---
 
 投資判断に関わる内容です。必ず
-[ai-stock-investing-tutorialの免責事項](../../../ai-stock-investing-tutorial/DISCLAIMER.md)
+[ai-stock-investing-tutorialの免責事項](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/DISCLAIMER.md)
 をご確認ください。
 
 [← 前へ: 既存アプリの統合パターン横断マッピング](01-case-study-map.md)

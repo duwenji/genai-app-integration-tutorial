@@ -70,6 +70,9 @@
 - 各ファイル末尾に前後リンクを置く
 - カテゴリREADMEには教材リンク一覧を置く
 - トップREADMEから全カテゴリへ1クリックで移動可能にする
+- ai-stock-investing-tutorialなど**他リポジトリへのリンク**は相対パスではなく
+  GitHub URL（`https://github.com/duwenji/<repo>/blob/master/<path>`）を使う。
+  本リポジトリ単体でクローン・閲覧された場合でもリンク切れにならないようにするため
 
 ## 8. レビュー用チェックリスト
 
@@ -81,4 +84,4 @@
 - 出典: 外部記事・既存アプリからの引用に出典が明記されている
 - 図表: 比較・フローを表す箇所がMermaid形式で図示されている
 - 適法性: ケーススタディが投資助言と誤解されない表現になっている
-  （該当箇所は[ai-stock-investing-tutorialの免責事項](../ai-stock-investing-tutorial/DISCLAIMER.md)を参照）
+  （該当箇所は[ai-stock-investing-tutorialの免責事項](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/DISCLAIMER.md)を参照）

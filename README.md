@@ -5,7 +5,7 @@
 体系的に学ぶ、エンジニア向け教材です。
 
 特定ドメインに依存しない一般原則を中心に扱い、実例として
-[ai-stock-investing-tutorial](../ai-stock-investing-tutorial/README.md) の
+[ai-stock-investing-tutorial](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/README.md) の
 完成版アプリ（`app/`）を随所でケーススタディとして参照します。
 
 **📢 更新状況**: ✅ 01〜05カテゴリ執筆完了
@@ -39,4 +39,4 @@
 
 ## 関連教材
 
-- [ai-stock-investing-tutorial](../ai-stock-investing-tutorial/README.md) — 本教材でケーススタディとして参照する完成版アプリの元教材。プロンプト設計・分析エージェントの基礎はこちらで学べます。
+- [ai-stock-investing-tutorial](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/README.md) — 本教材でケーススタディとして参照する完成版アプリの元教材。プロンプト設計・分析エージェントの基礎はこちらで学べます。

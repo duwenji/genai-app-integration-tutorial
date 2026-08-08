@@ -28,8 +28,10 @@
 - 1文は60文字程度を目安に短く保つ
 - 各ファイル末尾に前後リンク（`[← 前へ: ...](...)` / `[次へ: ... →](...)`）を置く
 - `docs/05-real-world-case-study/` 配下のファイル末尾には、
-  `../../../ai-stock-investing-tutorial/DISCLAIMER.md` へのリンクと
-  「投資判断に関わる内容です。」の一文を置く（01〜04には不要）
+  `https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/DISCLAIMER.md`
+  へのリンクと「投資判断に関わる内容です。」の一文を置く（01〜04には不要）。
+  リポジトリをまたぐリンクは、相対パスではなくGitHub URLを使う
+  （このリポジトリ単体でクローン・閲覧されてもリンク切れにならないようにするため）
 - ai-stock-investing-tutorialの実ソースは
   `c:/Dev/tutorials/ai-stock-investing-tutorial/app/` 以下にある。本プランの
   コード引用はすべてこの時点の実ファイルから書き起こし済みなので、

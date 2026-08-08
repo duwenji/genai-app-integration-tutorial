@@ -24,8 +24,9 @@ LLMに自由なJSONを出力させると、アプリ側が想定していない�
 
 `build_screening_prompt`は、使用可能なfieldを`per`/`pbr`/`dividend_yield_pct`/
 `sector`の4つに限定するようプロンプト内で明示しています。`sector`を使う場合の
-operatorは`==`のみとし、valueは実在する業種名（`SECTOR_MAP`の値）から
-選ばせることで表記ゆれを吸収しています。
+operatorは`==`のみとし、valueは実在する業種名（`SECTOR_MAP`の値。
+`app/screening/sectors.py`で定義された「銘柄コード→東証17業種区分」の対応表）
+から選ばせることで表記ゆれを吸収しています。
 
 ### プロンプトでの限定だけに頼らない
 

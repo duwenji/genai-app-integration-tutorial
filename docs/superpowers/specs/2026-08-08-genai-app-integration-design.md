@@ -2,7 +2,7 @@
 
 ## 1. 背景・目的
 
-[ai-stock-investing-tutorial](../../../../ai-stock-investing-tutorial/README.md) の
+[ai-stock-investing-tutorial](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/README.md) の
 完成版アプリ（`app/`）は、生成AI（Claude Code CLI）を9箇所で活用しており、
 バッチ処理・構造化出力＋防御的パース・キャッシュ・確認ステップ・
 事実とAI考察の分離など、複数のカテゴリにまたがる設計パターンを
@@ -148,7 +148,7 @@ scaffold済み（後述5節参照）。`docs/0X-*/` 配下の教材本文は、�
 - 6.1節で図解計画のある教材にMermaidコードブロックが存在し、
   記法エラーがない（コードブロック言語指定 `mermaid` を確認）
 - 05章のケーススタディが投資助言と誤解されない表現になっている
-  （該当箇所は[ai-stock-investing-tutorialの免責事項](../../../../ai-stock-investing-tutorial/DISCLAIMER.md)にリンク）
+  （該当箇所は[ai-stock-investing-tutorialの免責事項](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/DISCLAIMER.md)にリンク）
 
 ## 8. スコープ外（本設計書では扱わない）
 
