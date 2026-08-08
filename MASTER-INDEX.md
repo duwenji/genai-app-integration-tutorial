@@ -30,7 +30,7 @@
 - [docs/03-reliability-and-cost/03-batching-and-parallelization.md](docs/03-reliability-and-cost/03-batching-and-parallelization.md) - バッチ化・並列化によるコスト最適化
 - [docs/03-reliability-and-cost/04-testing-llm-integrations.md](docs/03-reliability-and-cost/04-testing-llm-integrations.md) - LLM呼び出しのテスト（モック化）
 
-## 04. Trust & Safety UX 🚧
+## 04. Trust & Safety UX
 - [docs/04-trust-and-safety-ux/00-README.md](docs/04-trust-and-safety-ux/00-README.md)
 - [docs/04-trust-and-safety-ux/01-verification-checkpoint.md](docs/04-trust-and-safety-ux/01-verification-checkpoint.md) - 確認ステップ（Verificationパターン）
 - [docs/04-trust-and-safety-ux/02-fact-and-opinion-separation.md](docs/04-trust-and-safety-ux/02-fact-and-opinion-separation.md) - 事実とAI考察の分離
