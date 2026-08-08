@@ -8,7 +8,7 @@
 [ai-stock-investing-tutorial](../ai-stock-investing-tutorial/README.md) の
 完成版アプリ（`app/`）を随所でケーススタディとして参照します。
 
-**📢 更新状況**: 🚧 作成中
+**📢 更新状況**: ✅ 01〜05カテゴリ執筆完了
 
 - 全体索引: [MASTER-INDEX.md](MASTER-INDEX.md)
 - スタイルガイド: [00_STYLE_GUIDE.md](00_STYLE_GUIDE.md)
