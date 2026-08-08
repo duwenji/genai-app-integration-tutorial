@@ -120,13 +120,33 @@ scaffold済み（後述5節参照）。`docs/0X-*/` 配下の教材本文は、�
   必ず1回は明示し、独自用語だけで説明を終わらせない
 - 01〜04は汎用原則、05はそれを実アプリで確認するケーススタディという
   役割分担を崩さない（05に新しい原則を持ち込まない）
+- 図（アーキテクチャ比較・処理フロー）は`00_STYLE_GUIDE.md`の
+  「6. 図表ルール」に従い、すべてMermaid形式で記載する（画像化しない）
+
+### 6.1 図解計画
+
+| ファイル | 図の種類 | 内容 |
+|----------|----------|------|
+| `01-02-api-sdk-vs-cli-subprocess.md` | `flowchart` | API直叩き/SDK/CLIサブプロセスの3方式のコンポーネント関係比較 |
+| `01-03-system-prompt-and-io-boundary.md` | `sequenceDiagram` | システムプロンプト付与からLLM応答取得までの流れ |
+| `02-01-structured-output-json-contract.md` | `sequenceDiagram` | プロンプト送信→JSON応答→コードフェンス除去→パースの流れ |
+| `03-01-defensive-parsing-and-fallback.md` | `flowchart` | パース成功/失敗の分岐とフォールバック先 |
+| `03-02-caching-strategy.md` | `sequenceDiagram` | キャッシュヒット/ミス判定の流れ（`app/common/cache.py`ベース） |
+| `03-03-batching-and-parallelization.md` | `sequenceDiagram` | `map_concurrently`による並列取得の流れ |
+| `04-01-verification-checkpoint.md` | `sequenceDiagram` | AI解釈→ユーザー確認→適用の流れ（`app_tabs/screening_tab.py`ベース） |
+| `05-01-case-study-map.md` | `flowchart` | `app/`内9箇所の生成AI活用箇所と01〜04カテゴリの対応関係の俯瞰図 |
+
+上記以外の教材は表・箇条書きで十分伝わる内容のため、図は必須としない
+（教材執筆時に必要と判断すれば追加してよい）。
 
 ## 7. 完了条件・レビュー観点
 
 - MASTER-INDEXの全リンクが実在するファイルを指している
 - 各教材が対応する外部パターン名を明記している
 - `app/`引用箇所の出典パスが実在し、内容と矛盾しない
-- スタイルガイドのレビュー用チェックリスト（7節）を満たす
+- スタイルガイドのレビュー用チェックリスト（8節）を満たす
+- 6.1節で図解計画のある教材にMermaidコードブロックが存在し、
+  記法エラーがない（コードブロック言語指定 `mermaid` を確認）
 - 05章のケーススタディが投資助言と誤解されない表現になっている
   （該当箇所は[ai-stock-investing-tutorialの免責事項](../../../../ai-stock-investing-tutorial/DISCLAIMER.md)にリンク）
 
