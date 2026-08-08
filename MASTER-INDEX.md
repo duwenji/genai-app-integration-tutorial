@@ -11,7 +11,7 @@
 ## Cover
 - [docs/00-COVER.md](docs/00-COVER.md)
 
-## 01. Invocation & Architecture 🚧
+## 01. Invocation & Architecture
 - [docs/01-invocation-and-architecture/00-README.md](docs/01-invocation-and-architecture/00-README.md)
 - [docs/01-invocation-and-architecture/01-augmented-llm-building-block.md](docs/01-invocation-and-architecture/01-augmented-llm-building-block.md) - Augmented LLMという基本単位とワークフロー/エージェントの違い
 - [docs/01-invocation-and-architecture/02-api-sdk-vs-cli-subprocess.md](docs/01-invocation-and-architecture/02-api-sdk-vs-cli-subprocess.md) - API直叩き/SDK/CLIサブプロセス方式の比較と選定基準
