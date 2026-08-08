@@ -36,7 +36,7 @@
 - [docs/04-trust-and-safety-ux/02-fact-and-opinion-separation.md](docs/04-trust-and-safety-ux/02-fact-and-opinion-separation.md) - 事実とAI考察の分離
 - [docs/04-trust-and-safety-ux/03-guardrails-and-disclaimers.md](docs/04-trust-and-safety-ux/03-guardrails-and-disclaimers.md) - ガードレールと免責事項
 
-## 05. Real World Case Study 🚧
+## 05. Real World Case Study
 - [docs/05-real-world-case-study/00-README.md](docs/05-real-world-case-study/00-README.md)
 - [docs/05-real-world-case-study/01-case-study-map.md](docs/05-real-world-case-study/01-case-study-map.md) - 既存アプリ9箇所の統合パターン横断マッピング
 - [docs/05-real-world-case-study/02-exercise-apply-to-your-app.md](docs/05-real-world-case-study/02-exercise-apply-to-your-app.md) - 自分のアプリへの適用演習
