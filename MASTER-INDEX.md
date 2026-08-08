@@ -17,7 +17,7 @@
 - [docs/01-invocation-and-architecture/02-api-sdk-vs-cli-subprocess.md](docs/01-invocation-and-architecture/02-api-sdk-vs-cli-subprocess.md) - API直叩き/SDK/CLIサブプロセス方式の比較と選定基準
 - [docs/01-invocation-and-architecture/03-system-prompt-and-io-boundary.md](docs/01-invocation-and-architecture/03-system-prompt-and-io-boundary.md) - システムプロンプトによる出力制御と認証・鍵管理
 
-## 02. I/O Contract Design 🚧
+## 02. I/O Contract Design
 - [docs/02-io-contract-design/00-README.md](docs/02-io-contract-design/00-README.md)
 - [docs/02-io-contract-design/01-structured-output-json-contract.md](docs/02-io-contract-design/01-structured-output-json-contract.md) - JSON構造化出力の契約設計
 - [docs/02-io-contract-design/02-single-vs-batch-prompting.md](docs/02-io-contract-design/02-single-vs-batch-prompting.md) - 単発/バッチ呼び出しの設計
