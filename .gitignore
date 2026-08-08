@@ -1,0 +1,16 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Build output
+*.pdf
+*.epub
+*.mobi
+node_modules/
+
+# Ebook output
+ebook-output/
