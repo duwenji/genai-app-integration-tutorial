@@ -35,9 +35,9 @@
 
 ## 用語対応表
 
-| 本教材の用語 | 対応する外部の呼称 |
-|--------------|----------------------|
-| 呼び出し方式とアーキテクチャ選定 | Augmented LLM（Anthropic） |
-| バッチ化・並列化 | Parallelization（Anthropic） |
-| 確認ステップ | Verification / Human-in-the-loop（Shape of AI） |
-| 事実とAI考察の分離、禁止事項の明示 | Guardrails |
+| 本教材の用語 | 対応する外部の呼称 | 読み方 |
+|--------------|----------------------|--------|
+| 呼び出し方式とアーキテクチャ選定 | Augmented LLM（Anthropic） | オーグメンテッド・エルエルエム |
+| バッチ化・並列化 | Parallelization（Anthropic） | パラレライゼーション |
+| 確認ステップ | Verification / Human-in-the-loop（Shape of AI） | ベリフィケーション／ヒューマン・イン・ザ・ループ |
+| 事実とAI考察の分離、禁止事項の明示 | Guardrails | ガードレールズ |

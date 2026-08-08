@@ -19,6 +19,31 @@ LLMの応答は決定的ではなく、実際にCLIやAPIを呼び出すテス�
 
 ## 主要概念・設計判断の解説
 
+### pytestのfixtureと`monkeypatch`の仕組み
+
+`test_call_llm_returns_stdout_on_success(monkeypatch)`のように、テスト関数の
+引数に`monkeypatch`と書くだけで使えています。これはpytestの**fixture**という
+仕組みによるものです。テスト関数の引数名がfixture名と一致すると、pytestが
+該当する値を自動的に注入してくれます（importは不要）。`monkeypatch`はpytestが
+標準で提供しているfixtureの1つで、「実行中のオブジェクト・属性・環境変数を
+一時的に差し替え、テスト終了後は自動的に元へ戻す」役割を持ちます。
+
+コード中には2種類の書き方が出てきます。
+
+```python
+monkeypatch.setattr("shutil.which", lambda name: "claude-executable")
+monkeypatch.setattr(subprocess, "run", fake_run)
+```
+
+どちらも`setattr(対象, 属性名, 差し替え後の値)`という同じ操作ですが、対象の
+指定方法が異なります。前者は`"モジュール名.属性名"`という文字列で対象を指定し、
+後者は`subprocess`モジュールオブジェクトと属性名`"run"`を分けて渡しています。
+挙動は同じで、後者の書き方ではimport済みのオブジェクトをそのまま渡せます。
+
+`monkeypatch.setattr`が`unittest.mock.patch`と違い`with`文や`try/finally`を
+書かずに済むのは、fixtureの後始末（テアダウン）機構がテスト終了時に自動で
+元の状態へ戻してくれるためです。
+
 ### モック化する2箇所
 
 `call_llm`はサブプロセス呼び出しの境界が明確なため、
@@ -92,6 +117,8 @@ def research_news_batch(
 
 ## 理解度チェック
 
+- [ ] pytestのfixtureがテスト関数にどう注入されるか、`monkeypatch`が
+      なぜ後始末不要で使えるか説明できる
 - [ ] `call_llm`をモック化する際にどの2箇所を差し替えればよいか説明できる
 - [ ] 正常系・異常系の両方をテストする理由を説明できる
 - [ ] `call_llm=default_call_llm`という引数デフォルトパターンがテストしやすさに
