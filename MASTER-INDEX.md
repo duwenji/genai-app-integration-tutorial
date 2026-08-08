@@ -23,7 +23,7 @@
 - [docs/02-io-contract-design/02-single-vs-batch-prompting.md](docs/02-io-contract-design/02-single-vs-batch-prompting.md) - 単発/バッチ呼び出しの設計
 - [docs/02-io-contract-design/03-prompt-scope-and-constraints.md](docs/02-io-contract-design/03-prompt-scope-and-constraints.md) - 出力範囲の限定と禁止事項の明示
 
-## 03. Reliability & Cost 🚧
+## 03. Reliability & Cost
 - [docs/03-reliability-and-cost/00-README.md](docs/03-reliability-and-cost/00-README.md)
 - [docs/03-reliability-and-cost/01-defensive-parsing-and-fallback.md](docs/03-reliability-and-cost/01-defensive-parsing-and-fallback.md) - 防御的パースとフォールバック設計
 - [docs/03-reliability-and-cost/02-caching-strategy.md](docs/03-reliability-and-cost/02-caching-strategy.md) - キャッシュ層の設計
