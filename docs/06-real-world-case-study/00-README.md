@@ -1,4 +1,4 @@
-# 05. Real World Case Study - 実践：既存アプリの統合パターン横断分析
+# 06. Real World Case Study - 実践：既存アプリの統合パターン横断分析
 
 このカテゴリは本チュートリアルの総仕上げです。01〜04で学んだ
 呼び出し方式・入出力契約・信頼性/コスト・安全性UXの原則が、
@@ -9,14 +9,14 @@
 
 ## 学習目標
 
-- `app/`内9箇所の生成AI活用箇所を、01〜04の観点でマッピングした一覧表を読み解ける
-- 01〜04で学んだ設計判断を、自分のアプリの新機能に適用できる
+- `app/`内10箇所の生成AI活用箇所を、01〜05の観点でマッピングした一覧表を読み解ける
+- 01〜05で学んだ設計判断を、自分のアプリの新機能に適用できる
 
 ## 教材一覧
 
 | # | 教材 | 内容 |
 |---|------|------|
-| 01 | [既存アプリの統合パターン横断マッピング](01-case-study-map.md) | 9箇所の生成AI活用を01〜04の観点で一覧化 |
+| 01 | [既存アプリの統合パターン横断マッピング](01-case-study-map.md) | 10箇所の生成AI活用を01〜04の観点で一覧化 |
 | 02 | [自分のアプリへの適用演習](02-exercise-apply-to-your-app.md) | テンプレートを使ったミニ設計演習 |
 
 ---
@@ -25,4 +25,4 @@
 [ai-stock-investing-tutorialの免責事項](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/DISCLAIMER.md)
 をご確認ください。
 
-[← 前へ: 04-trust-and-safety-ux](../04-trust-and-safety-ux/00-README.md)
+[← 前へ: 05-agentic-workflow-patterns](../05-agentic-workflow-patterns/00-README.md)

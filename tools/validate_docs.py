@@ -46,7 +46,7 @@ MERMAID_REQUIRED = {
     ("05-agentic-workflow-patterns", "02-routing.md"),
     ("05-agentic-workflow-patterns", "03-orchestrator-workers.md"),
     ("05-agentic-workflow-patterns", "04-evaluator-optimizer.md"),
-    ("05-real-world-case-study", "01-case-study-map.md"),
+    ("06-real-world-case-study", "01-case-study-map.md"),
 }
 
 MD_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
