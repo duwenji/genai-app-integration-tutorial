@@ -100,4 +100,4 @@ flowchart TD
 
 ---
 
-[← 前へ: 00-README](00-README.md) | [次へ: キャッシュ層の設計 →](02-caching-strategy.md)
+[← 前へ: 00-README](00-README.md) | [次へ: レート制限・タイムアウト設計 →](02-rate-limit-and-timeout.md)

@@ -37,8 +37,9 @@ MERMAID_REQUIRED = {
     ("02-io-contract-design", "01-structured-output-json-contract.md"),
     ("02-io-contract-design", "04-multi-turn-dialogue-prompting.md"),
     ("03-reliability-and-cost", "01-defensive-parsing-and-fallback.md"),
-    ("03-reliability-and-cost", "02-caching-strategy.md"),
-    ("03-reliability-and-cost", "03-batching-and-parallelization.md"),
+    ("03-reliability-and-cost", "02-rate-limit-and-timeout.md"),
+    ("03-reliability-and-cost", "03-caching-strategy.md"),
+    ("03-reliability-and-cost", "04-batching-and-parallelization.md"),
     ("04-trust-and-safety-ux", "01-verification-checkpoint.md"),
     ("05-real-world-case-study", "01-case-study-map.md"),
 }

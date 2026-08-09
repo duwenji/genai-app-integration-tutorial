@@ -121,4 +121,4 @@ key = "portfolio-review-" + hashlib.sha256(
 
 ---
 
-[← 前へ: 防御的パースとフォールバック設計](01-defensive-parsing-and-fallback.md) | [次へ: バッチ化・並列化 →](03-batching-and-parallelization.md)
+[← 前へ: レート制限・タイムアウト設計](02-rate-limit-and-timeout.md) | [次へ: バッチ化・並列化 →](04-batching-and-parallelization.md)

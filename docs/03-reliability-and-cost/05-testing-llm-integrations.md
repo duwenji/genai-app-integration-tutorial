@@ -126,4 +126,4 @@ def research_news_batch(
 
 ---
 
-[← 前へ: バッチ化・並列化](03-batching-and-parallelization.md) | [次へ: 04-trust-and-safety-ux →](../04-trust-and-safety-ux/00-README.md)
+[← 前へ: バッチ化・並列化](04-batching-and-parallelization.md) | [次へ: 04-trust-and-safety-ux →](../04-trust-and-safety-ux/00-README.md)

@@ -108,4 +108,4 @@ sequenceDiagram
 
 ---
 
-[← 前へ: キャッシュ層の設計](02-caching-strategy.md) | [次へ: LLM呼び出しのテスト →](04-testing-llm-integrations.md)
+[← 前へ: キャッシュ層の設計](03-caching-strategy.md) | [次へ: LLM呼び出しのテスト →](05-testing-llm-integrations.md)
