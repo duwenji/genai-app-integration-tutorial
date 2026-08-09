@@ -8,7 +8,7 @@
 [ai-stock-investing-tutorial](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/README.md) の
 完成版アプリ（`app/`）を随所でケーススタディとして参照します。
 
-**📢 更新状況**: ✅ 01〜05カテゴリ執筆完了
+**📢 更新状況**: ✅ 01〜06カテゴリ執筆完了
 
 - 全体索引: [MASTER-INDEX.md](MASTER-INDEX.md)
 - スタイルガイド: [00_STYLE_GUIDE.md](00_STYLE_GUIDE.md)
@@ -24,7 +24,8 @@
 3. [docs/02-io-contract-design/00-README.md](docs/02-io-contract-design/00-README.md) で入出力契約の設計を学ぶ
 4. [docs/03-reliability-and-cost/00-README.md](docs/03-reliability-and-cost/00-README.md) で信頼性・コスト最適化の設計を学ぶ
 5. [docs/04-trust-and-safety-ux/00-README.md](docs/04-trust-and-safety-ux/00-README.md) で信頼と安全性のUX設計を学ぶ
-6. [docs/05-real-world-case-study/00-README.md](docs/05-real-world-case-study/00-README.md) で実践ケーススタディに取り組む
+6. [docs/05-agentic-workflow-patterns/00-README.md](docs/05-agentic-workflow-patterns/00-README.md) で複数LLM呼び出しの組み合わせパターンを学ぶ
+7. [docs/06-real-world-case-study/00-README.md](docs/06-real-world-case-study/00-README.md) で実践ケーススタディに取り組む
 
 ---
 
@@ -35,7 +36,8 @@
 - [docs/02-io-contract-design/00-README.md](docs/02-io-contract-design/00-README.md)
 - [docs/03-reliability-and-cost/00-README.md](docs/03-reliability-and-cost/00-README.md)
 - [docs/04-trust-and-safety-ux/00-README.md](docs/04-trust-and-safety-ux/00-README.md)
-- [docs/05-real-world-case-study/00-README.md](docs/05-real-world-case-study/00-README.md)
+- [docs/05-agentic-workflow-patterns/00-README.md](docs/05-agentic-workflow-patterns/00-README.md)
+- [docs/06-real-world-case-study/00-README.md](docs/06-real-world-case-study/00-README.md)
 
 ## 関連教材
 

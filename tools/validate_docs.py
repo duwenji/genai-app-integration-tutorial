@@ -50,6 +50,7 @@ MERMAID_REQUIRED = {
 }
 
 MD_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+CODE_FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
 
 
 def _category_dirs(only: str | None) -> list[Path]:
@@ -87,6 +88,9 @@ def check_mermaid(path: Path, category_dir: Path) -> list[str]:
 def check_links(path: Path) -> list[str]:
     problems = []
     text = path.read_text(encoding="utf-8")
+    # コードブロック内はPythonの辞書アクセス（例: `_WORKERS[name](args)`）等が
+    # Markdownリンク構文と偶然一致することがあるため、リンク検証の対象から除く。
+    text = CODE_FENCE_RE.sub("", text)
     for match in MD_LINK_RE.finditer(text):
         target = match.group(1)
         if target.startswith(("http://", "https://", "#")):

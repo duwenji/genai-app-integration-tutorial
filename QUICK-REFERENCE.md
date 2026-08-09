@@ -21,6 +21,7 @@
 | 観点 | 対策 |
 |------|------|
 | パース失敗 | コードフェンス除去 → `json.loads` → 失敗時フォールバック値 |
+| 一時的な失敗 | タイムアウト設定＋指数バックオフでのリトライ（恒久的エラーはリトライ対象外） |
 | 重複呼び出し | 日次/TTLベースのキャッシュ |
 | 呼び出し回数 | 複数対象を1プロンプトにまとめる（バッチ化） |
 | 個別対象の失敗 | 例外を対象単位で捕捉し、他の処理は継続 |
@@ -32,6 +33,7 @@
 - [ ] 事実（プログラムで計算した値）とAIの考察を表示上分離しているか
 - [ ] プロンプトで禁止事項（断定的な助言等）を明示しているか
 - [ ] 免責事項を出力に必ず付与しているか
+- [ ] LLM出力の演算子・フィールドをホワイトリスト化し、eval等の直接評価を避けているか
 
 ## 用語対応表
 
@@ -41,3 +43,20 @@
 | バッチ化・並列化 | Parallelization（Anthropic） | パラレライゼーション |
 | 確認ステップ | Verification / Human-in-the-loop（Shape of AI） | ベリフィケーション／ヒューマン・イン・ザ・ループ |
 | 事実とAI考察の分離、禁止事項の明示 | Guardrails | ガードレールズ |
+| マルチターン対話プロンプト | Stateless Multi-turn Conversation | ステートレス・マルチターン・カンバセーション |
+| プロンプトインジェクション対策 | Input/Output Guardrail（二層構造） | インプット・アウトプット・ガードレール |
+| Prompt Chaining | Prompt Chaining（Anthropic） | プロンプト・チェイニング |
+| Routing | Routing（Anthropic） | ルーティング |
+| Orchestrator-Workers | Orchestrator-Workers（Anthropic） | オーケストレーター・ワーカーズ |
+| Evaluator-Optimizer | Evaluator-Optimizer（Anthropic） | エバリュエーター・オプティマイザー |
+| 自律エージェント | Autonomous Agents（Anthropic） | オートノマス・エージェンツ |
+
+## エージェント型ワークフローの選び方（05章）
+
+| パターン | 向いているケース |
+|---|---|
+| Prompt Chaining | タスクが明確な固定順序のサブタスクに分解できる |
+| Routing | 入力が明確に異なるカテゴリに分類でき、カテゴリごとに個別対応したい |
+| Orchestrator-Workers | 必要なサブタスクを事前に予測できず、動的に決めたい |
+| Evaluator-Optimizer | 明確な評価基準があり、反復改善で品質が上がる |
+| Autonomous Agents | 実行経路を事前にコード化できない開放的な問題 |

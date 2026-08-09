@@ -7,6 +7,7 @@
 - 防御的パース・キャッシュ・バッチ化によるコスト最適化の実装力
 - 確認ステップ・事実とAI考察の分離によるユーザー向け安全性設計力
 - 既存アプリの生成AI活用箇所を、設計パターンの観点で分析する力
+- 複数LLM呼び出しの組み合わせパターン（Prompt Chaining/Routing/Orchestrator-Workers/Evaluator-Optimizer）を理解し、単発呼び出しとの使い分けを判断する力
 
 ## 対象読者
 
@@ -23,18 +24,24 @@ STEP 1 ──→ Invocation & Architecture（3教材）
              Augmented LLMという基本単位・呼び出し方式の選定・
              システムプロンプトによる出力制御
 
-STEP 2 ──→ I/O Contract Design（3教材）
-             構造化出力の契約設計・単発/バッチ呼び出し・出力範囲の限定
+STEP 2 ──→ I/O Contract Design（4教材）
+             構造化出力の契約設計・単発/バッチ呼び出し・出力範囲の限定・
+             マルチターン（対話型）プロンプトの設計
 
-STEP 3 ──→ Reliability & Cost（4教材）
-             防御的パース・キャッシュ層・バッチ化/並列化・テスト（モック化）
+STEP 3 ──→ Reliability & Cost（5教材）
+             防御的パース・レート制限とタイムアウト・キャッシュ層・
+             バッチ化/並列化・テスト（モック化）
 
-STEP 4 ──→ Trust & Safety UX（3教材）
+STEP 4 ──→ Trust & Safety UX（4教材）
              確認ステップ（Verification）・事実とAI考察の分離・
-             ガードレールと免責事項
+             ガードレールと免責事項・プロンプトインジェクション対策
 
-STEP 5 ──→ Real World Case Study（2教材）
-             既存アプリ9箇所の統合パターン横断分析・自分のアプリへの適用演習
+STEP 5 ──→ Agentic Workflow Patterns（5教材）
+             Prompt Chaining・Routing・Orchestrator-Workers・
+             Evaluator-Optimizer・Autonomous Agents
+
+STEP 6 ──→ Real World Case Study（2教材）
+             既存アプリ10箇所の統合パターン横断分析・自分のアプリへの適用演習
 ```
 
 ## 前提知識
@@ -50,8 +57,9 @@ STEP 5 ──→ Real World Case Study（2教材）
 
 1. 特定ドメインに依存しない**一般的な設計パターン**を軸に構成する
 2. 各パターンは、Anthropicの公開資料や実務記事など**外部の確立された呼称**に対応づける
-3. 実例として [ai-stock-investing-tutorial](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/README.md) の
-   完成版アプリ（`app/`）の実ソースコードを引用し、抽象論で終わらせない
+3. 実例として、`app/`に実装があるものは実ソースコードを優先して引用する。
+   `app/`に実装例が無いパターン（05章が該当）は、その旨を明記した上で
+   汎用サンプルコードで解説し、抽象論で終わらせない
 4. 最終章では、既存アプリの生成AI活用箇所を横断的に棚卸しし、
    自分のアプリへの適用演習に取り組む
 
