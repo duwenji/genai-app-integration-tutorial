@@ -8,8 +8,9 @@
 
 ## 概要
 
-ユーザーの自由記述の質問を「ファンダメンタル」「テクニカル」「一般」に
-分類し、それぞれ専用のプロンプトで処理するRoutingパターンを解説します。
+ユーザーの自由記述の投資質問を「ファンダメンタル」「テクニカル」
+「ニュース」「ポートフォリオ全体」「一般」の5カテゴリに分類し、
+それぞれ専用のプロンプトで処理するRoutingパターンを解説します。
 
 ## 位置づけ
 
@@ -35,65 +36,104 @@ Prompt Chainingが固定順序であるのに対し、Routingは入力に応じ�
 これは04章のガードレール/03章の防御的パースと同じ「安全側に倒す」
 考え方です。
 
+### `app/`での実装
+
+「AI質問箱」タブは、質問文をLLMで分類（`classify_question`）した後、
+カテゴリに応じて既存の分析エージェント（ファンダメンタルズ・テクニカル・
+ニュース・ポートフォリオ構成/リスク）を呼び出し、事実データを埋め込んだ
+専用プロンプトで回答を生成します。分類のみをプロンプト層
+（`prompt_patterns/qa_routing.py`）に切り出し、事実データの取得と
+実際の分岐実行はタブ層（`app_tabs/qa_tab.py`）が担うという役割分担
+（他タブとも共通）を取っています。
+
+個別銘柄向けカテゴリ（fundamental/technical/news）に分類されたが銘柄
+コードが未入力の場合は`general`に読み替える、という追加のフォールバックも
+入れています。これは「未知ラベル→既定カテゴリ」と同じ「安全側に倒す」
+考え方を、「分類は正しいが実行に必要な入力が欠けている」ケースにも
+広げたものです。
+
 ## 実ソースコード（Python / プロンプト例、出典パス明記）
 
-本教材のサンプルコードは`app/`に実装例が無いため、汎用サンプルコードで
-解説します。
+出典: `ai-stock-investing-tutorial/app/prompt_patterns/qa_routing.py`、
+`ai-stock-investing-tutorial/app/app_tabs/qa_tab.py`
 
 ```python
-def build_fundamental_prompt(question: str) -> str:
-    return f"次の質問にファンダメンタル分析の観点で答えてください。\n\n{question}"
+_CATEGORIES = ["fundamental", "technical", "news", "portfolio", "general"]
 
 
-def build_technical_prompt(question: str) -> str:
-    return f"次の質問にテクニカル分析の観点で答えてください。\n\n{question}"
-
-
-def build_general_prompt(question: str) -> str:
-    return f"次の質問に一般的な投資知識の観点で答えてください。\n\n{question}"
-
-
-_ROUTES = {
-    "fundamental": build_fundamental_prompt,
-    "technical": build_technical_prompt,
-    "general": build_general_prompt,
-}
-
-
-def classify_question(question: str) -> str:
-    prompt = (
-        "次の質問を fundamental, technical, general のいずれかに分類し、"
-        "分類名のみを出力してください。\n\n" + question
+def build_classify_prompt(question: str) -> str:
+    return (
+        "次の株式投資に関する質問を、fundamental, technical, news, portfolio, "
+        "general のいずれか1つに分類し、分類名のみを出力してください"
+        "（説明文やコードブロック記法は不要です）。\n\n"
+        "- fundamental: PER・PBR・配当利回りなど個別銘柄の財務指標に関する質問\n"
+        "- technical: 移動平均線など個別銘柄の値動き・チャートに関する質問\n"
+        "- news: 個別銘柄の直近ニュース・センチメントに関する質問\n"
+        "- portfolio: 保有銘柄全体の構成比・リスク・分散に関する質問\n"
+        "- general: 上記のいずれにも当てはまらない一般的な投資知識の質問\n\n"
+        f"質問: {question}"
     )
-    label = call_llm(prompt).strip()
-    # 未知のラベルが返った場合は "general" にフォールバックする。
-    return label if label in _ROUTES else "general"
 
 
-def route_question(question: str) -> str:
-    label = classify_question(question)
-    build_prompt = _ROUTES[label]
-    return call_llm(build_prompt(question))
+def classify_question(question: str, call_llm=default_call_llm) -> str:
+    # 未知のラベルや空応答は安全側の "general" にフォールバックする。
+    label = call_llm(build_classify_prompt(question)).strip()
+    return label if label in _CATEGORIES else "general"
+```
+
+タブ層での振り分け実行部分:
+
+```python
+    with st.spinner("質問を分類しています..."):
+        category = classify_question(question, call_llm=call_llm)
+
+    note = None
+    if category in ("fundamental", "technical", "news") and not ticker:
+        note = "個別銘柄について聞く場合は銘柄コードを入力してください。一般的な回答を表示します。"
+        category = "general"
+
+    with st.spinner("回答を生成しています..."):
+        if category == "fundamental":
+            fundamentals = cached_analyze_fundamentals(ticker)
+            prompt = build_fundamental_answer_prompt(question, fundamentals)
+        elif category == "technical":
+            history = cached_fetch_price_history(ticker, "6mo")
+            technical = analyze_technical(history)
+            prompt = build_technical_answer_prompt(question, technical)
+        elif category == "news":
+            news = cached_fetch_news(ticker)
+            prompt = build_news_answer_prompt(question, news)
+        elif category == "portfolio":
+            ...  # 保有銘柄の構成比・リスク指標を計算してプロンプトへ
+        else:
+            prompt = build_general_answer_prompt(question)
+
+        answer = call_llm(prompt)
 ```
 
 ```mermaid
 flowchart TD
     A["question"] --> B["classify_question(question)"]
     B --> C{"分類ラベル"}
-    C -->|fundamental| D["build_fundamental_prompt"]
-    C -->|technical| E["build_technical_prompt"]
-    C -->|"general / 未知"| F["build_general_prompt"]
-    D --> G["call_llm(prompt)"]
-    E --> G
-    F --> G
+    C -->|fundamental, ticker有| D["build_fundamental_answer_prompt"]
+    C -->|technical, ticker有| E["build_technical_answer_prompt"]
+    C -->|news, ticker有| F["build_news_answer_prompt"]
+    C -->|portfolio| G["build_portfolio_answer_prompt"]
+    C -->|"general / 未知 / ticker未入力"| H["build_general_answer_prompt"]
+    D --> I["call_llm(prompt)"]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
 ```
 
 ## 演習課題
 
 1. "general"以外に、未知ラベル時のフォールバック先として"fundamental"を
    選んだ場合、どんなリスクがあるか説明してください。
-2. `app/`のスクリーニング機能にRoutingを追加するなら、どんな分類軸が
-   考えられるか（例: 個別銘柄向けか業種横断か）1つ挙げてください。
+2. `app/`の「AI質問箱」に6番目のカテゴリ（例: "backtest" — バックテスト
+   結果に関する質問）を追加するとしたら、`classify_question`の分類プロンプト
+   と`app_tabs/qa_tab.py`の分岐処理をどう変更するか設計してください。
 
 ## 理解度チェック
 

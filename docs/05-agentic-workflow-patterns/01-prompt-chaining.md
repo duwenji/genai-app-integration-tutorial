@@ -8,7 +8,7 @@
 
 ## 概要
 
-決算資料の要約→リスク要因抽出という2段階のタスクを例に、Prompt Chaining
+バックテスト結果の解説→改善提案という2段階のタスクを例に、Prompt Chaining
 パターンを解説します。
 
 ## 位置づけ
@@ -31,71 +31,117 @@
 ### ステップ間のgate（検証）の役割
 
 各ステップの出力を次に渡す前に妥当性チェックを挟むことで、誤りの伝播を
-防げます。本教材のサンプルでは、要約が空文字列でないかを確認してから
-リスク抽出に進みます。
+防げます。`app/`の実装では、Step1（結果解説）が空文字を返した場合は
+Step2（改善提案）に進まず、エラーメッセージをそのまま返します。一方、
+Step2が空文字の場合はStep1の結果自体には価値があるため、改善提案
+セクションだけを省略してStep1の結果を返します（gateは両ステップに
+対称に置くとは限らない、という設計判断の例です）。
 
-### `app/`との対比
+### `app/`での実装
 
-`app/`のポートフォリオレビュー（1回のAugmented LLM呼び出しで事実データを
-渡し考察を得る）と異なり、Prompt Chainingは複数回の呼び出しそのものが
-処理ステップになります。
+既存の「バックテスト解説」機能（単発のAugmented LLM呼び出し）を、
+「結果解説→改善提案」の2ステップに分解しています。関数シグネチャと
+戻り値の型（Markdown文字列）は変更していないため、呼び出し元
+（`backtest_tab.py`）と既存の日次ファイルキャッシュはそのまま機能します。
 
 ## 実ソースコード（Python / プロンプト例、出典パス明記）
 
-本教材のサンプルコードは`app/`に実装例が無いため、汎用サンプルコードで
-解説します。
+出典: `ai-stock-investing-tutorial/app/portfolio_management/backtest.py`、
+`ai-stock-investing-tutorial/app/prompt_patterns/backtest_explanation.py`
 
 ```python
-def call_llm(prompt: str) -> str:
-    """LLM呼び出しの共通口（01章のAugmented LLM呼び出しに相当）。"""
-    ...
+def generate_backtest_explanation(
+    ticker: str,
+    prices: pd.Series,
+    backtest_func=run_ma_crossover_backtest,
+    strategy_name: str = "移動平均クロスオーバー",
+    presets: list[tuple[str, dict]] | None = None,
+    transaction_cost_pct: float = 0.0,
+    call_llm=default_call_llm,
+) -> str:
+    if presets is None:
+        presets = STRATEGIES[strategy_name]["presets"]
+
+    comparison = run_backtest_comparison(prices, backtest_func, presets, transaction_cost_pct)
+
+    # Step1: 結果解説
+    explanation = call_llm(build_backtest_prompt(ticker, comparison, strategy_name)).strip()
+    if not explanation:
+        # gate: Step1が空文字ならStep2に進まずエラーメッセージを返す
+        return "解説の生成に失敗しました。"
+
+    sections = [
+        DISCLAIMER_NOTICE,
+        "",
+        f"# バックテスト結果解説（{ticker}）",
+        "",
+        explanation,
+    ]
+
+    # Step2: 改善提案（Step1の解説を入力として渡す）
+    improvement_prompt = build_improvement_prompt(ticker, comparison, explanation, strategy_name)
+    improvement = call_llm(improvement_prompt).strip()
+    if improvement:
+        sections += ["", "## 追加で検討したい観点", "", improvement]
+
+    sections += ["", "---", "", DISCLAIMER_NOTICE]
+    return "\n".join(sections)
 
 
-def summarize_earnings(report_text: str) -> str:
-    prompt = f"次の決算資料を300字以内で要約してください。\n\n{report_text}"
-    return call_llm(prompt)
-
-
-def extract_risk_factors(summary: str) -> str:
-    prompt = f"次の要約からリスク要因を箇条書きで3つ抽出してください。\n\n{summary}"
-    return call_llm(prompt)
-
-
-def chained_earnings_risk_report(report_text: str) -> str:
-    """決算要約→リスク抽出の順に固定ステップでLLMを呼び出す（Prompt Chaining）。"""
-    summary = summarize_earnings(report_text)
-    if not summary.strip():
-        raise ValueError("要約が空のため、リスク抽出ステップに進めません（gate）。")
-    risks = extract_risk_factors(summary)
-    return f"## 要約\n{summary}\n\n## リスク要因\n{risks}"
+def build_improvement_prompt(
+    ticker: str,
+    comparison: dict[str, dict],
+    explanation: str,
+    strategy_name: str = "移動平均クロスオーバー",
+) -> str:
+    # Step1（結果解説）の出力を入力として受け取り、追加で検討すべき観点を
+    # 生成させる2段階目のプロンプト。
+    comparison_json = json.dumps(comparison, ensure_ascii=False, indent=2, default=str)
+    return (
+        f"以下は{strategy_name}戦略のバックテスト結果（Python側で計算済み）と、"
+        "その結果について別のAIが作成した解説文です。\n\n"
+        f"【対象銘柄】{ticker}\n"
+        f"【パラメータ組ごとの結果（JSON）】\n{comparison_json}\n\n"
+        f"【既存の解説】\n{explanation}\n\n"
+        "この解説を踏まえ、投資家が追加で検討する価値がある観点を"
+        "日本語で2〜3個、簡潔に提案してください。\n"
+        # ...（過学習リスク・取引コスト等を考慮させる指示が続く）
+    )
 ```
 
 ```mermaid
 sequenceDiagram
-    participant Caller as 呼び出し元
-    participant Step1 as summarize_earnings
+    participant Caller as backtest_tab.py
+    participant Step1 as call_llm(build_backtest_prompt)
     participant Gate as gate（空文字チェック）
-    participant Step2 as extract_risk_factors
+    participant Step2 as call_llm(build_improvement_prompt)
 
-    Caller->>Step1: report_text
-    Step1-->>Caller: summary
-    Caller->>Gate: summaryを検証
-    alt summaryが空
-        Gate-->>Caller: ValueError（処理中断）
-    else summaryが有効
+    Caller->>Step1: ticker, comparison
+    Step1-->>Caller: explanation
+    Caller->>Gate: explanationを検証
+    alt explanationが空
+        Gate-->>Caller: 「解説の生成に失敗しました。」を返す（処理中断）
+    else explanationが有効
         Gate-->>Caller: OK
-        Caller->>Step2: summary
-        Step2-->>Caller: risks
+        Caller->>Step2: ticker, comparison, explanation
+        Step2-->>Caller: improvement
+        alt improvementが空
+            Caller->>Caller: 改善提案セクションを省略しexplanationのみ返す
+        else improvementが有効
+            Caller->>Caller: explanation + improvementを結合して返す
+        end
     end
 ```
 
 ## 演習課題
 
-1. `chained_earnings_risk_report`に3段階目（リスク要因を1〜5の
-   リスクスコアに変換するステップ）を追加するなら、どんな関数シグネチャに
-   なるか設計してください。
-2. `app/`にPrompt Chainingを追加するなら、どの機能が候補になるか
-   （例: バックテスト解説→改善提案の2段階化）理由とともに1つ挙げてください。
+1. `generate_backtest_explanation`に3段階目（改善提案の内容を1〜5の
+   優先度スコアに変換するステップ）を追加するなら、どんな関数
+   シグネチャになるか設計してください。
+2. gateがStep1（解説）の空文字チェックのみに置かれ、Step2（改善提案）の
+   空文字チェックには「処理中断」ではなく「セクション省略」という
+   異なる扱いになっている理由を、両ステップの成果物としての価値の違いの
+   観点から説明してください。
 
 ## 理解度チェック
 
