@@ -100,4 +100,4 @@ op_func = _OPERATORS[op_symbol]
 
 ---
 
-[← 前へ: 単発呼び出し vs バッチ呼び出し](02-single-vs-batch-prompting.md) | [次へ: 03-reliability-and-cost →](../03-reliability-and-cost/00-README.md)
+[← 前へ: 単発呼び出し vs バッチ呼び出し](02-single-vs-batch-prompting.md) | [次へ: マルチターン（対話型）プロンプトの設計 →](04-multi-turn-dialogue-prompting.md)

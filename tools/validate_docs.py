@@ -35,6 +35,7 @@ MERMAID_REQUIRED = {
     ("01-invocation-and-architecture", "02-api-sdk-vs-cli-subprocess.md"),
     ("01-invocation-and-architecture", "03-system-prompt-and-io-boundary.md"),
     ("02-io-contract-design", "01-structured-output-json-contract.md"),
+    ("02-io-contract-design", "04-multi-turn-dialogue-prompting.md"),
     ("03-reliability-and-cost", "01-defensive-parsing-and-fallback.md"),
     ("03-reliability-and-cost", "02-caching-strategy.md"),
     ("03-reliability-and-cost", "03-batching-and-parallelization.md"),
