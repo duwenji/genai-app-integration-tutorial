@@ -41,6 +41,7 @@ MERMAID_REQUIRED = {
     ("03-reliability-and-cost", "03-caching-strategy.md"),
     ("03-reliability-and-cost", "04-batching-and-parallelization.md"),
     ("04-trust-and-safety-ux", "01-verification-checkpoint.md"),
+    ("04-trust-and-safety-ux", "04-prompt-injection-defense.md"),
     ("05-real-world-case-study", "01-case-study-map.md"),
 }
 
