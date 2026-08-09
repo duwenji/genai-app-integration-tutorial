@@ -51,3 +51,4 @@
 - [docs/06-real-world-case-study/00-README.md](docs/06-real-world-case-study/00-README.md)
 - [docs/06-real-world-case-study/01-case-study-map.md](docs/06-real-world-case-study/01-case-study-map.md) - 既存アプリ10箇所の統合パターン横断マッピング
 - [docs/06-real-world-case-study/02-exercise-apply-to-your-app.md](docs/06-real-world-case-study/02-exercise-apply-to-your-app.md) - 自分のアプリへの適用演習
+- [docs/06-real-world-case-study/03-operations-checklist.md](docs/06-real-world-case-study/03-operations-checklist.md) - 運用移行前チェックリスト

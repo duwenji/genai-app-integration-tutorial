@@ -76,4 +76,4 @@
 [ai-stock-investing-tutorialの免責事項](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/DISCLAIMER.md)
 をご確認ください。
 
-[← 前へ: 既存アプリの統合パターン横断マッピング](01-case-study-map.md)
+[← 前へ: 既存アプリの統合パターン横断マッピング](01-case-study-map.md) | [次へ: 運用移行前チェックリスト →](03-operations-checklist.md)
