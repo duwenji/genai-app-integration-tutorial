@@ -63,13 +63,23 @@ Orchestrator-Workers/Evaluator-Optimizer/Routingパターンへ発展してい�
 
 ```python
 def call_llm(prompt: str, timeout: int = 120) -> str:
-    """Claude Code CLIにプロンプトを渡し、応答テキストを取得する。
+    """設定されたLLMプロバイダにプロンプトを渡し、応答テキストを取得する。
 
     各分析エージェントやコメント生成処理から共通のLLM呼び出し口として利用される。
     """
+    provider = _get_provider()
+    if provider == "claude_cli":
+        return _call_claude_cli(prompt, timeout)
+    elif provider == "openai":
+        return _call_openai(prompt, timeout)
+    else:
+        raise ValueError(f"未対応のllm_providerです: {provider}")
+
+
+def _call_claude_cli(prompt: str, timeout: int) -> str:
+    """Claude Code CLIにプロンプトを渡し、応答テキストを取得する。"""
     executable = _resolve_claude_executable()
     with log_duration(logger, f"Claude CLI呼び出し（prompt長={len(prompt)}）"):
-        logger.info("Claude CLIリクエスト: %s", prompt)
         result = subprocess.run(
             [executable, "--system-prompt", _SYSTEM_PROMPT, "-p"],
             input=prompt,
@@ -80,13 +90,17 @@ def call_llm(prompt: str, timeout: int = 120) -> str:
         )
         if result.returncode != 0:
             raise ClaudeCLIError(f"Claude Code CLIの実行に失敗しました: {result.stderr.strip()}")
-        logger.info("Claude CLIレスポンス: %s", result.stdout)
     return result.stdout.strip()
 ```
 
 この`call_llm`が、`app/`内すべての生成AI機能が呼び出す唯一の入口です。
-検索やツール呼び出しは行わず、プロンプト文字列を渡して応答文字列を受け取るだけの
-最小構成のAugmented LLM呼び出しになっています。
+`llm_provider`設定（`.streamlit/secrets.toml`）で`_call_claude_cli`（Claude Code
+CLIをサブプロセス実行）と`_call_openai`（OpenAI Chat Completions APIをSDK経由で
+直接呼び出す）を切り替えられ、現在の設定は`_call_openai`（SDK方式）です
+（`llm_provider`未設定時のコード側フォールバック既定値は`_call_claude_cli`）。
+どちらの経路でも検索やツール呼び出しは行わず、プロンプト文字列を渡して応答文字列を
+受け取るだけの最小構成のAugmented LLM呼び出しである点は変わりません
+（方式選択の詳細は[02章](02-api-sdk-vs-cli-subprocess.md)で扱います）。
 
 ## 演習課題
 

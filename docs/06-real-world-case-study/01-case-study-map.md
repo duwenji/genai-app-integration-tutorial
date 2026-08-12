@@ -43,9 +43,14 @@
 
 ### 全11箇所に共通する設計
 
-- **01章（呼び出し方式）**: すべてCLIサブプロセス方式（`llm_client.call_llm`）を経由する
+- **01章（呼び出し方式）**: すべて同一の入口関数`llm_client.call_llm`を経由する。
+  `llm_provider`設定（`.streamlit/secrets.toml`）でCLIサブプロセス方式とSDK方式
+  （OpenAI）を切り替えられ、現在の設定はSDK方式（`"openai"`）。コード側の
+  フォールバック既定値（`llm_provider`未設定時）はCLIサブプロセス方式
+  （`"claude_cli"`）のまま。切り替えは11箇所共通のグローバル設定であり、
+  機能ごとに方式が異なることはない
   （例外: マルチターン対話（10番目）は複数ターンにわたり同じ`call_llm`を
-  繰り返し呼び出すが、呼び出し方式自体はCLIサブプロセス方式のまま変わらない）
+  繰り返し呼び出すが、呼び出し方式自体は他の10箇所と変わらない）
 - **03章（キャッシュ）**: 大半が日次ファイルキャッシュを使う（銘柄詳細情報と
   AI質問箱（11番目）は「キャッシュを無視して再生成する」オプションが
   無い、または当日中の再利用そのものを行わない例外）
@@ -104,7 +109,7 @@ Prompt Chaining化）・`app/prompt_patterns/strategy_dialogue.py`と
 ```mermaid
 flowchart TB
     subgraph cat01["01. Invocation & Architecture"]
-        c01n["全11箇所共通: llm_client.call_llm()（CLIサブプロセス方式）"]
+        c01n["全11箇所共通: llm_client.call_llm()（現在の設定はSDK方式、設定変更でCLIサブプロセス方式にも切替可）"]
     end
     subgraph cat02["02. I/O Contract Design"]
         c02a["単発呼び出し: レビュー/ウェーブレット解説/銘柄詳細"]
