@@ -38,15 +38,24 @@ Anthropicの定義では、Augmented LLMとは検索（retrieval）・ツール�
 
 ### 実アプリの生成AI機能はどこに位置するか
 
-ai-stock-investing-tutorialの`app/`は、生成AIを9箇所で活用していますが、
-すべて「1回のAugmented LLM呼び出し（必要な事実データをプロンプトに埋め込み、
-1〜数文の考察を得る）」です。ワークフローの中でも最も単純な形であり、
-エージェントやOrchestrator-Workersのような動的な分岐は使っていません。
+ai-stock-investing-tutorialの`app/`は、生成AIを11箇所で活用しています。
+このうち8箇所は「1回（またはバッチ）のAugmented LLM呼び出し（必要な事実
+データをプロンプトに埋め込み、1〜数文の考察を得る）」で、ワークフローの
+中でも最も単純な形にとどまっています。残る3箇所（バックテスト解説・
+AI協調型戦略対話・AI投資質問箱）は、単一のAugmented LLM呼び出しでは
+表現しづらい構造に対応するため、05章で扱うPrompt Chaining/
+Orchestrator-Workers/Evaluator-Optimizer/Routingパターンへ発展しています
+（詳細は[05章](../05-agentic-workflow-patterns/00-README.md)と
+[06章の横断マッピング](../06-real-world-case-study/01-case-study-map.md)を
+参照）。エージェント（実行中にLLM自身が次の行動を決める構成）は、
+`app/`のどの機能でも使っていません。
 
 これはAnthropicが原則として掲げる「まず単純な構成から始め、効果が実証された
-場合のみ複雑さを足す」を体現した設計です。株価分析コメントの生成に
-自律的なエージェントは不要で、事実データ→1回のLLM呼び出し→表示、という
-単純な構成で十分に価値が出せています。
+場合のみ複雑さを足す」を体現した設計です。株価分析コメントの生成の大半に
+複雑なワークフローは不要で、事実データ→1回のLLM呼び出し→表示、という
+単純な構成で十分に価値が出せています。一方、固定順の2段階処理や動的な
+ワーカー選定が必要になった一部の機能だけ、必要になった分だけ複雑さを
+足しています。
 
 ## 実ソースコード（Python / プロンプト例、出典パス明記）
 
@@ -84,13 +93,16 @@ def call_llm(prompt: str, timeout: int = 120) -> str:
 1. `ai-stock-investing-tutorial/app/`から`call_llm`を呼び出している箇所を3つ探し
    （`analysis_agents/`, `prompt_patterns/`, `portfolio_management/`, `stock_detail/`
    配下を探すとよい）、それぞれ「単発呼び出し」か「バッチ呼び出し」かを分類してください。
-2. もし`app/`にOrchestrator-Workersパターン（複数の分析結果を1つの司令塔がまとめる形）
-   を導入するなら、どの機能が候補になるか、理由とともに1つ挙げてください。
+2. `app/`のAI協調型戦略対話は、単一のAugmented LLM呼び出しでは足りず
+   Orchestrator-Workersパターン（05-03章）へ発展しています。なぜ他の
+   8箇所は単純なAugmented LLM呼び出しのままで十分なのか、この機能との
+   違いを理由とともに説明してください。
 
 ## 理解度チェック
 
 - [ ] Augmented LLMとワークフロー、エージェントの違いを説明できる
-- [ ] `app/`のLLM呼び出しがすべて単純なAugmented LLM呼び出しである理由を説明できる
+- [ ] `app/`の大半のLLM呼び出しが単純なAugmented LLM呼び出しにとどまる理由と、
+      一部だけワークフローパターンへ発展した理由を説明できる
 - [ ] 「まず単純な構成から始める」という原則を自分の言葉で説明できる
 
 ---
