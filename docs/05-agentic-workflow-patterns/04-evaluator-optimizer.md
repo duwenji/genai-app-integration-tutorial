@@ -83,15 +83,15 @@ def run_evaluation_loop(
                 refined = json.loads(strip_code_fence(raw))
             except json.JSONDecodeError:
                 refined = None
-            if isinstance(refined, dict) and "conditions" in refined:
+            if isinstance(refined, dict) and "steps" in refined:
                 current = refined
 
     return {"strategy": current, "iterations": max_iterations, "last_feedback": last_feedback}
 ```
 
-`build_evaluate_prompt`は3つの評価基準（条件の具体性、過度な絞り込みで
-ないか、断定的な投資助言表現を含まないか）を`{"pass": bool, "feedback":
-str}`形式のJSONで問うプロンプトを組み立てます。`build_refinement_prompt`
+`build_evaluate_prompt`は3つの評価基準（各ステップのfunction・paramsが
+具体的か、過度な絞り込みでないか、断定的な投資助言表現を含まないか）を
+`{"pass": bool, "feedback": str}`形式のJSONで問うプロンプトを組み立てます。`build_refinement_prompt`
 （`prompt_patterns/strategy_dialogue.py`）は、既存の対話ペルソナ指示を
 使わず、確定候補JSON＋評価フィードバックから修正版JSONを1回で
 生成させる軽量プロンプトです。

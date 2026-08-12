@@ -28,7 +28,7 @@ AI戦略ビルダー機能②の対話型スクリーニング条件構築（`st
 
 ### 2段階のペルソナ指示
 
-`_PERSONA_INSTRUCTIONS`は、1つのプロンプトに2段階のステップを埋め込みます。
+`_PERSONA_INSTRUCTIONS_TEMPLATE`は、1つのプロンプトに2段階のステップを埋め込みます。
 
 - **ステップ1（アイデアの定量化）**: ユーザーの投資アイデアを具体化する
   質問・提案を1〜2個、短く行う。JSON形式は使わない
@@ -36,18 +36,24 @@ AI戦略ビルダー機能②の対話型スクリーニング条件構築（`st
   説明文を含めず```json コードブロックのみで確定出力する
 
 どちらのステップに進むかはLLM自身の判断に委ねられており、アプリ側は
-毎ターン同じ指示文（`_PERSONA_INSTRUCTIONS`）を送るだけです。
+毎ターン同じ指示文（`_PERSONA_INSTRUCTIONS_TEMPLATE`、使用できる関数一覧
+`{functions}`だけはターンによらず同じ内容で毎回展開）を送るだけです。
+使用できる関数一覧はハードコードではなく、`strategy_builder/pipeline_functions.py`
+の`PIPELINE_FUNCTIONS`レジストリから`_format_pipeline_functions_for_prompt`が
+毎回組み立てます（05-03章 Orchestrator-Workersで扱うワーカーレジストリと
+同じもの）。
 
 ### 応答の分岐解析
 
 `parse_dialogue_response`は、LLM応答を次のように判定します。
 
-- JSONとしてパースでき、かつ`strategy_name`と`conditions`の両キーを
+- JSONとしてパースでき、かつ`strategy_name`と`steps`の両キーを
   含む場合 → `{"kind": "strategy", "strategy": {...}}`（確定出力）
 - それ以外（パース失敗、またはキー不足） → `{"kind": "question", "text": raw}`
   （対話継続）
 
 JSONパースに成功しても`strategy_name`が無ければ「question」として扱われる
+（`steps`のみで`strategy_name`を欠く場合も同様に「question」扱いになる）
 点がポイントです。これにより、ステップ1の途中でLLMが誤って断片的な
 JSONらしき文字列を返しても、対話が壊れず継続します。
 
@@ -74,32 +80,46 @@ data_api.llm_client.call_llm はターン単位のセッション状態を持た
 import json
 
 from common.json_parsing import strip_code_fence
+from strategy_builder.pipeline_functions import PIPELINE_FUNCTIONS
 
-_PERSONA_INSTRUCTIONS = """\
-あなた（AI）は、ユーザーの投資アイデアを厳密な「株式スクリーニング・バックテスト条件」へと
+
+def _format_pipeline_functions_for_prompt() -> str:
+    lines = []
+    for name, entry in PIPELINE_FUNCTIONS.items():
+        params_lines = "\n".join(
+            f"    - {param}: {description}"
+            for param, description in entry["params_schema"].items()
+        )
+        lines.append(f"- {name}: {entry['description']}\n  params:\n{params_lines}")
+    return "\n".join(lines)
+
+
+_PERSONA_INSTRUCTIONS_TEMPLATE = """\
+あなた（AI）は、ユーザーの投資アイデアを厳密な「株式スクリーニング・パイプライン」へと
 昇華させるプロのクオンツ・アナリストです。以下のステップに従ってユーザーをナビゲートしてください。
 
 【ステップ1: アイデアの定量化】
 ユーザーから「考え方」が入力されたら、それを歓迎し、以下の要素を具体化するための質問や提案を
 1〜2個、短く行ってください。
-1. 使用する財務指標（例: PER, PBR, ROE, DIVIDEND_YIELD, REVENUE_GROWTH のいずれか）
-2. 具体的な数値の閾値（例: PBR 1倍未満、ROE 10%以上など）
+1. どの関数（複数可）をどの順番で使うか
+2. 各関数のパラメータ（戦略名・期間・閾値等）
 このステップでは、説明文以外は出力しないでください。JSON形式は使わないでください。
+
+【使用できる関数一覧】
+{functions}
 
 【ステップ2: 構造化データの出力】
 ユーザーと条件が合意できたら、それ以外の説明文を一切含めず、必ず次のJSON形式のみを
 ```json コードブロックで返してください。
 ```json
-{
+{{
   "strategy_name": "確定した戦略名",
-  "conditions": [
-    {"indicator": "PER", "operator": "LESS_THAN", "value": 15},
-    {"indicator": "ROE", "operator": "GREATER_THAN", "value": 10}
-  ],
-  "sort_by": "ROE",
-  "order": "DESC"
-}
+  "steps": [
+    {{"function": "関数名", "params": {{...}}}}
+  ]
+}}
 ```
+stepsは上記の関数一覧にある関数名のみを使い、必要な順番・組み合わせで並べてください。
 """
 
 
@@ -107,13 +127,16 @@ def build_dialogue_prompt(history: list[dict], sectors: list[str] | None = None)
     """会話履歴（[{"role": "user"|"assistant", "content": str}, ...]）から、
     ペルソナ指示と会話全文を含む1回分のLLM呼び出し用プロンプトを組み立てる。
     """
+    persona = _PERSONA_INSTRUCTIONS_TEMPLATE.format(
+        functions=_format_pipeline_functions_for_prompt()
+    )
     transcript_lines = [
         f"{'ユーザー' if turn['role'] == 'user' else 'AI'}: {turn['content']}"
         for turn in history
     ]
     transcript = "\n".join(transcript_lines)
     return (
-        f"{_PERSONA_INSTRUCTIONS}"
+        f"{persona}"
         f"\n\n【これまでの会話】\n{transcript}\n\n【あなたの次の発言】"
     )
 
@@ -121,7 +144,7 @@ def build_dialogue_prompt(history: list[dict], sectors: list[str] | None = None)
 def parse_dialogue_response(raw: str) -> dict:
     """LLM応答を判定する。
 
-    JSONコードブロックとして解析でき、かつ`strategy_name`と`conditions`を
+    JSONコードブロックとして解析でき、かつ`strategy_name`と`steps`を
     含む場合は `{"kind": "strategy", "strategy": {...}}` を返す。
     それ以外は質問・提案テキストとして `{"kind": "question", "text": raw}` を返す。
     """
@@ -133,11 +156,16 @@ def parse_dialogue_response(raw: str) -> dict:
     if (
         isinstance(parsed, dict)
         and "strategy_name" in parsed
-        and "conditions" in parsed
+        and "steps" in parsed
     ):
         return {"kind": "strategy", "strategy": parsed}
     return {"kind": "question", "text": raw.strip()}
 ```
+
+使用できる関数一覧（`{functions}`）は、05-03章 Orchestrator-Workersで扱う
+`PIPELINE_FUNCTIONS`レジストリの`description`/`params_schema`から動的に
+組み立てられます。ハードコードされた財務指標一覧ではなく、レジストリ側の
+関数追加・削除に自動で追従する設計です。
 
 `sectors`引数によるSECTOR表記ゆれ吸収は、02-03章「出力範囲の限定と禁止事項」で
 学んだ内容と重複するため、本教材では説明を省略します。
@@ -157,8 +185,8 @@ sequenceDiagram
         Dialogue-->>UI: 質問・提案テキスト
         UI->>User: 追加の質問を表示（対話継続）
     else kind == "strategy"
-        Dialogue-->>UI: {"strategy_name": ..., "conditions": [...]}
-        UI->>User: 確定した戦略条件を表示
+        Dialogue-->>UI: {"strategy_name": ..., "steps": [...]}
+        UI->>User: 確定した戦略パイプラインを表示
     end
 ```
 

@@ -38,7 +38,7 @@
 | 7 | セクターローテーションのペアコメント | 業種間の値動きの時差相関が高い上位ペアにAIがコメントする | バッチ（上位5件） | 「コメント生成失敗」 | なし |
 | 8 | ウェーブレット分析のAI解説 | 2業種間の時間変化するリード・ラグの直近シグナルをAIが解説する | 単発 | （呼び出し元にエラー伝播） | なし |
 | 9 | 銘柄詳細ダイアログの総合コメント | 個別銘柄のPER/PBR/テクニカル/ニュースを統合した総合コメントをAIが生成する | 単発 | （呼び出し元にエラー伝播） | なし |
-| 10 | AI協調型戦略対話 | ユーザーの投資アイデアを対話しながらスクリーニング条件に構造化し、確定前に自動評価・改善する | マルチターン対話（02章）＋**Evaluator-Optimizer** | 質問継続へのフォールバック（JSONパース失敗時はquestion種別として扱う）／評価パース失敗時は不合格として扱う | あり（評価・改善ループ後の最終案をst.json確認） |
+| 10 | AI協調型戦略対話 | ユーザーの投資アイデアを対話しながらスクリーニング/ランキング関数の実行手順（steps）に構造化し、確定前に自動評価・改善する | マルチターン対話（02章）＋**Orchestrator-Workers**（steps選定）＋**Evaluator-Optimizer**（確定候補の評価・改善） | 質問継続へのフォールバック（JSONパース失敗時はquestion種別として扱う）／未知関数・実行時例外のステップはスキップしtraceに記録して継続／評価パース失敗時は不合格として扱う | あり（評価・改善ループ後の最終案をst.json確認） |
 | 11 | AI投資質問箱 | 自由記述の投資質問をAIが5カテゴリに分類し、専用の分析エージェントへ振り分けて回答する | 単発×2（**Routing**: 分類＋回答） | 未知ラベル/銘柄コード未入力時は`general`にフォールバック | なし |
 
 ### 全11箇所に共通する設計
@@ -72,28 +72,34 @@ AI協調型戦略対話（10番目）は、`parse_dialogue_response`のkind判�
 
 05章で扱うエージェント型ワークフローパターンのうち、Prompt Chaining
 （5番目: バックテスト解説）・Routing（11番目: AI投資質問箱）・
-Evaluator-Optimizer（10番目: AI協調型戦略対話）の3つは`app/`で
-実際に使われています。いずれも「単一のAugmented LLM呼び出しでは
-表現しづらい構造」（固定順の2段階処理、入力に応じた分岐、生成→評価の
-反復）に対応する形で導入されており、Anthropicが推奨する「まず単純な
-構成から始め、必要になった箇所だけ複雑さを追加する」という原則の
-実例になっています。
+Orchestrator-Workers（10番目: AI協調型戦略対話、steps選定）・
+Evaluator-Optimizer（10番目: AI協調型戦略対話、確定候補の評価・改善）の
+4つは`app/`で実際に使われています。いずれも「単一のAugmented LLM呼び出しでは
+表現しづらい構造」（固定順の2段階処理、入力に応じた分岐、動的なワーカー
+選定、生成→評価の反復）に対応する形で導入されており、Anthropicが推奨する
+「まず単純な構成から始め、必要になった箇所だけ複雑さを追加する」という
+原則の実例になっています。10番目の機能はOrchestrator-Workersと
+Evaluator-Optimizerが1つのフロー内の異なる局面（候補生成の局面／確定前の
+検証の局面）で組み合わさっている点が特徴です。
 
-残るOrchestrator-WorkersとAutonomous Agentsの2パターンは、`app/`の
-どの機能でも使用していません。中央LLMによる動的なサブタスク委譲
-（Orchestrator-Workers）や自律的な複数ステップの意思決定
-（Autonomous Agents）が必要になるほど、`app/`の各機能は複雑な
-オープンエンドの意思決定を要求しないためです。
+残るAutonomous Agentsの1パターンは、`app/`のどの機能でも使用していません。
+自律的な複数ステップの意思決定（終了条件や次の行動をLLM自身が都度判断し
+続ける設計）が必要になるほど、`app/`の各機能は複雑なオープンエンドの
+意思決定を要求しないためです。AI協調型戦略対話のOrchestrator-Workersも、
+ワーカーの選定はLLMが動的に行いますが、選定後の実行自体は`run_pipeline`が
+決定的に処理する点でAutonomous Agentsとは一線を画します。
 
 ## 実ソースコード（Python / プロンプト例、出典パス明記）
 
 上記の表は、出典: `ai-stock-investing-tutorial/app/docs/app-design.md`の
 「3. 機能一覧」表と「5.1 LLM連携」節、および`app/app_tabs/qa_tab.py`
 （AI質問箱）・`app/portfolio_management/backtest.py`（バックテスト解説の
-Prompt Chaining化）・`app/strategy_builder/evaluation.py`（戦略対話の
-Evaluator-Optimizer化）を根拠にしています（全文転載はせず、本教材の
-一覧表として要約しています）。各パターンの実ソースコード引用は
-05-01章・05-02章・05-04章を参照してください。
+Prompt Chaining化）・`app/prompt_patterns/strategy_dialogue.py`と
+`app/strategy_builder/pipeline.py`（戦略対話のOrchestrator-Workers化）・
+`app/strategy_builder/evaluation.py`（戦略対話のEvaluator-Optimizer化）を
+根拠にしています（全文転載はせず、本教材の一覧表として要約しています）。
+各パターンの実ソースコード引用は05-01章・05-02章・05-03章・05-04章を
+参照してください。
 
 ```mermaid
 flowchart TB
@@ -116,7 +122,8 @@ flowchart TB
     subgraph cat05["05. Agentic Workflow Patterns"]
         c05a["Prompt Chaining: バックテスト解説"]
         c05b["Routing: AI投資質問箱"]
-        c05c["Evaluator-Optimizer: AI協調型戦略対話"]
+        c05d["Orchestrator-Workers: AI協調型戦略対話（steps選定）"]
+        c05c["Evaluator-Optimizer: AI協調型戦略対話（確定候補の評価・改善）"]
     end
 
     cat01 --> cat02 --> cat03 --> cat04 --> cat05
@@ -130,9 +137,8 @@ flowchart TB
 2. マッピング表に無い12番目の機能を`app/`に追加するとしたら、01〜04の
    各観点（呼び出し方式・入出力契約・信頼性/コスト・安全性UX）をどう
    設計するか、簡潔な設計メモを書いてください。05章で学んだワーク
-   フローパターン（Orchestrator-WorkersかAutonomous Agentsを検討して
-   ください — 既存3パターンは11番目までで使用済みです）を使う場合は、
-   その選定理由も含めてください。
+   フローパターンを使う場合は、その選定理由も含めてください
+   （Autonomous Agentsは11番目までで未使用です）。
 
 ## 理解度チェック
 
@@ -140,8 +146,9 @@ flowchart TB
 - [ ] 確認ステップがスクリーニング条件変換とAI協調型戦略対話の2箇所にのみ
       存在する理由を説明できる
 - [ ] 01〜05章の原則が実アプリでどう組み合わさっているか説明できる
-- [ ] 05章の5パターンのうち、`app/`で使われている3つと使われていない
-      2つを区別できる
+- [ ] 05章の5パターンのうち、`app/`で使われている4つ（AI協調型戦略対話は
+      Orchestrator-WorkersとEvaluator-Optimizerの両方を使う）と、
+      使われていないAutonomous Agentsを区別できる
 
 ---
 

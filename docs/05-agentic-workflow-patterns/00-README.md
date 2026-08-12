@@ -5,14 +5,18 @@
 
 `app/`の生成AI活用11箇所のうち3箇所（バックテスト解説・AI質問箱・AI戦略
 ビルダーの確定フロー）は、本章で扱うPrompt Chaining/Routing/
-Evaluator-Optimizerパターンをそれぞれ実際に採用しています。残る8箇所は
-「1回のAugmented LLM呼び出し」（01章）のままです。用途が単一銘柄・
-単一レポート単位の考察生成にとどまる機能では、Anthropicが推奨する
-「まず単純な構成から始める」原則のとおり、ワークフロー/エージェントの
-複雑さを必要としないためです。本章のPrompt Chaining/Routing/
-Evaluator-Optimizerの3教材は`app/`の実ソースコードを引用して解説し、
-Orchestrator-WorkersとAutonomous Agentsの2教材は`app/`に実装例が
-無いため汎用サンプルコードで解説します。
+Evaluator-Optimizerパターンをそれぞれ実際に採用しています。さらにAI戦略
+ビルダーの確定フローは、対話LLMがスクリーニング/ランキング関数を動的に
+選んで実行順を決めるOrchestrator-Workersパターンも同時に採用しています
+（Evaluator-Optimizerは確定候補への自動評価・改善ループ、
+Orchestrator-Workersは候補生成自体のワーカー選定という別の局面で
+組み合わさっています）。残る8箇所は「1回のAugmented LLM呼び出し」
+（01章）のままです。用途が単一銘柄・単一レポート単位の考察生成に
+とどまる機能では、Anthropicが推奨する「まず単純な構成から始める」原則の
+とおり、ワークフロー/エージェントの複雑さを必要としないためです。本章の
+Prompt Chaining/Routing/Orchestrator-Workers/Evaluator-Optimizerの4教材は
+`app/`の実ソースコードを引用して解説し、Autonomous Agentsの1教材のみ
+`app/`に実装例が無いため汎用サンプルコードで解説します。
 
 ## 学習目標
 
@@ -43,9 +47,9 @@ Orchestrator-WorkersとAutonomous Agentsの2教材は`app/`に実装例が
 ## 章の方針
 
 各教材末尾の演習課題には、実アプリとの接点を保つ問いを必ず1問加えます。
-`app/`に実装がある3パターン（Prompt Chaining/Routing/Evaluator-Optimizer）
-では実装の設計判断を掘り下げる問いを、実装が無い2パターン
-（Orchestrator-Workers/Autonomous Agents）では「このパターンを`app/`に
+`app/`に実装がある4パターン（Prompt Chaining/Routing/
+Orchestrator-Workers/Evaluator-Optimizer）では実装の設計判断を掘り下げる
+問いを、実装が無いAutonomous Agentsでは「このパターンを`app/`に
 追加するならどこに使えそうか」という思考演習を扱います。
 
 ---
