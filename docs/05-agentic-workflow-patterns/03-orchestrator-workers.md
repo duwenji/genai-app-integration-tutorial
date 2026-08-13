@@ -120,13 +120,32 @@ stepsは上記の関数一覧にある関数名のみを使い、必要な順番
 """
 ```
 
-実行エンジン（ワーカー呼び出しと結果統合）:
+実行エンジン（ワーカー呼び出しと結果統合）。ワーカー呼び出しは
+[02-レート制限・タイムアウト設計](../03-reliability-and-cost/02-rate-limit-and-timeout.md)
+と同じ指数バックオフでリトライし、未知のfunction名またはリトライ後も失敗した
+ステップは候補を空にリセットする（絞り込み漏れのまま後続の重いワーカーが想定外に
+大きい候補集合に対して実行されるのを防ぐため）:
 
 ```python
+_MAX_RETRIES = 3
+_BASE_DELAY_SECONDS = 2.0
+
+
+def _run_step_with_retry(run_func, candidates_df, params, cache_dir):
+    for attempt in range(_MAX_RETRIES):
+        try:
+            return run_func(candidates_df, params, cache_dir)
+        except Exception:
+            if attempt == _MAX_RETRIES - 1:
+                raise
+            time.sleep(_BASE_DELAY_SECONDS * (2 ** attempt))
+
+
 def run_pipeline(steps: list[dict], all_tickers: list[str], cache_dir) -> tuple[pd.DataFrame, list[str]]:
     """全銘柄のticker列のみのDataFrameを初期値とし、stepsを先頭から順に適用する。
-    未知のfunction名や例外を送出したステップはスキップし、トレースに理由を記録して
-    処理を継続する（既存apply_filtersと同じ「壊れたLLM出力で全体を落とさない」方針）。"""
+    未知のfunction名、またはリトライしても例外を送出し続けたステップは、候補を
+    空にリセットしてトレースに理由を記録し、処理を継続する（既存apply_filtersと
+    同じ「壊れたLLM出力で全体を落とさない」方針）。"""
     candidates_df = pd.DataFrame({"ticker": all_tickers})
     trace = [f"開始: {len(candidates_df)}件"]
 
@@ -135,14 +154,19 @@ def run_pipeline(steps: list[dict], all_tickers: list[str], cache_dir) -> tuple[
         params = step.get("params", {})
         entry = PIPELINE_FUNCTIONS.get(function_name)
         if entry is None:
-            trace.append(f"{function_name}: 未知の関数のためスキップ")
+            trace.append(f"{function_name}: 未知の関数のため候補をリセット")
+            candidates_df = candidates_df.iloc[0:0]
             continue
         before_count = len(candidates_df)
         try:
-            candidates_df = entry["run"](candidates_df, params, cache_dir)
+            candidates_df = _run_step_with_retry(entry["run"], candidates_df, params, cache_dir)
         except Exception:
-            logger.exception("ステップ実行に失敗しました: function=%s params=%s", function_name, params)
-            trace.append(f"{function_name}: エラーのためスキップ")
+            logger.exception(
+                "ステップ実行に%d回リトライしても失敗しました: function=%s params=%s",
+                _MAX_RETRIES, function_name, params,
+            )
+            trace.append(f"{function_name}: {_MAX_RETRIES}回リトライしても失敗のため候補をリセット")
+            candidates_df = candidates_df.iloc[0:0]
             continue
         trace.append(f"{function_name}: {before_count}件→{len(candidates_df)}件")
 
@@ -164,9 +188,12 @@ flowchart TD
 ## 演習課題
 
 1. `run_pipeline`は未知の`function`名や例外発生時に処理全体を止めず、
-   そのステップだけスキップして`trace`に理由を記録します。これを03章の
-   防御的パースの考え方と結び付けて、なぜ「全体を止めない」設計が
-   ここでは適切か説明してください。
+   候補を空にリセットして`trace`に理由を記録し、処理を継続します。単に
+   「そのステップをスキップして直前の候補集合のまま次に進む」のではなく
+   「候補を空にリセットする」設計になっているのはなぜか、後続のワーカー
+   （`BACKTEST_RANK`等）への影響という観点から説明してください。また、
+   これを03章の防御的パースの考え方と結び付けて、なぜ「全体を止めない」
+   設計がここでは適切か説明してください。
 2. `PIPELINE_FUNCTIONS`のワーカーはLLM呼び出しを含まない決定的関数ですが、
    仮に「上位候補についてAIが定性的な評価コメントを付ける」ワーカーを
    1つ追加するとしたら、`params_schema`と`run`関数のシグネチャをどう

@@ -68,8 +68,10 @@ def call_llm(prompt: str, timeout: int = 120) -> str:
     return result.stdout.strip()
 ```
 
-本教材のサンプルコードは`app/`に実装例が無いため、汎用サンプルコードで
-解説します。
+`call_llm`自体にはリトライ実装が無いため、以下は汎用サンプルコードで
+解説します。ただし同じ「一時的なエラーは指数バックオフでリトライ、恒久的な
+エラーは即座に伝播」という原則は、LLM呼び出しより1段上のレイヤーで
+`app/`にも実装があります（後述「`app/`での実例」）。
 
 ```python
 import time
@@ -101,6 +103,41 @@ flowchart TD
     E -->|No| G["待機時間 = base_delay * 2^attempt だけスリープ"]
     G --> A
 ```
+
+### `app/`での実例 — ワーカーステップ単位のリトライ
+
+`app/`のAI戦略ビルダー（[03-orchestrator-workers.md](../05-agentic-workflow-patterns/03-orchestrator-workers.md)参照）の`run_pipeline`は、
+上記と同じ`max_retries=3`・`base_delay=2.0`の指数バックオフで各ワーカー
+ステップを実行します。呼び出し対象がLLMではなく決定的なPython関数
+（価格取得等のネットワークI/Oを含む）である点が異なりますが、「一時的な
+エラーはリトライ、恒久的なエラー（未知の`function`名等）はリトライしても
+解決しないため即座に諦める」という判断基準は同じです。
+
+出典: `ai-stock-investing-tutorial/app/strategy_builder/pipeline.py`
+
+```python
+_MAX_RETRIES = 3
+_BASE_DELAY_SECONDS = 2.0
+
+
+def _run_step_with_retry(run_func, candidates_df, params, cache_dir):
+    """一時的なエラー（ネットワーク瞬断等）に対して指数バックオフでリトライする。
+    未知のstrategy名等の恒久的なエラーもリトライ後は最終的に呼び出し元へ伝播する
+    （リトライで解決しないため）。"""
+    for attempt in range(_MAX_RETRIES):
+        try:
+            return run_func(candidates_df, params, cache_dir)
+        except Exception:
+            if attempt == _MAX_RETRIES - 1:
+                raise
+            time.sleep(_BASE_DELAY_SECONDS * (2 ** attempt))
+```
+
+`app/`にはこれとは別に、yfinance側のレート制限（`YFRateLimitError`）専用の
+リトライも`data_api/stock_price_api.py`の`_call_with_rate_limit_retry`に
+存在します（待機秒数30→60→120の固定バックオフ）。対象が汎用の`Exception`か
+特定のレート制限エラーかで、待機時間の設計が異なる点を比較すると理解が
+深まります。
 
 ## 演習課題
 
