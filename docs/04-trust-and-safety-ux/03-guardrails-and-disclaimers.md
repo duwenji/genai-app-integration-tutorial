@@ -19,6 +19,11 @@
 機械的付与は出力側の対策です。入力側の対策は次の04教材
 （[プロンプトインジェクション対策](04-prompt-injection-defense.md)）で扱います。
 
+本教材が扱う免責事項の機械的付与は、[Shape of AI](https://www.shapeof.ai/)の
+[Caveat](https://www.shapeof.ai/patterns/caveat)（モデル・技術の限界や
+リスクをユーザーに伝える）と[Disclosure](https://www.shapeof.ai/patterns/disclosure)
+（AIが関与したコンテンツ・やり取りであることを明示する）の両方に対応します。
+
 ## 位置づけ
 
 本教材はカテゴリ04の3番目の教材であり、01（確認ステップ）・02（事実と考察の分離）

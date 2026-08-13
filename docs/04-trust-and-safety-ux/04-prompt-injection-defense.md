@@ -141,4 +141,4 @@ flowchart TD
 
 ---
 
-[← 前へ: ガードレールと免責事項](03-guardrails-and-disclaimers.md) | [次へ: 05-agentic-workflow-patterns →](../05-agentic-workflow-patterns/00-README.md)
+[← 前へ: ガードレールと免責事項](03-guardrails-and-disclaimers.md) | [次へ: 透明性と制御 →](05-transparency-and-control.md)
