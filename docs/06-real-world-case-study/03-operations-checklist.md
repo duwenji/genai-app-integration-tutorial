@@ -142,4 +142,4 @@ PRの説明欄にそのまま貼り付けられるチェックリストを示し
 [ai-stock-investing-tutorialの免責事項](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/DISCLAIMER.md)
 をご確認ください。
 
-[← 前へ: 自分のアプリへの適用演習](02-exercise-apply-to-your-app.md)
+[← 前へ: 自分のアプリへの適用演習](02-exercise-apply-to-your-app.md) | [次へ: 07-ai-product-ux-patterns →](../07-ai-product-ux-patterns/00-README.md)

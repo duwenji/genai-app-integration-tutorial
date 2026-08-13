@@ -27,4 +27,4 @@
 [ai-stock-investing-tutorialの免責事項](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/DISCLAIMER.md)
 をご確認ください。
 
-[← 前へ: 05-agentic-workflow-patterns](../05-agentic-workflow-patterns/00-README.md)
+[← 前へ: 05-agentic-workflow-patterns](../05-agentic-workflow-patterns/00-README.md) | [次へ: 07-ai-product-ux-patterns →](../07-ai-product-ux-patterns/00-README.md)

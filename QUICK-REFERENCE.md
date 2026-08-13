@@ -34,6 +34,8 @@
 - [ ] プロンプトで禁止事項（断定的な助言等）を明示しているか
 - [ ] 免責事項を出力に必ず付与しているか
 - [ ] LLM出力の演算子・フィールドをホワイトリスト化し、eval等の直接評価を避けているか
+- [ ] AIの実行計画・処理経過をユーザーに開示しているか（Governors）
+- [ ] AIが何を記憶・記録するかを設計し、記録にfacts/ai_outputの区別があるか（Footprints）
 
 ## 用語対応表
 
@@ -50,6 +52,12 @@
 | Orchestrator-Workers | Orchestrator-Workers（Anthropic） | オーケストレーター・ワーカーズ |
 | Evaluator-Optimizer | Evaluator-Optimizer（Anthropic） | エバリュエーター・オプティマイザー |
 | 自律エージェント | Autonomous Agents（Anthropic） | オートノマス・エージェンツ |
+| 事実とAI出力の分離記録 | Footprints（Shape of AI） | フットプリンツ |
+| 実行計画・処理経過の開示 | Action plan / Stream of Thought（Shape of AI） | アクションプラン／ストリーム・オブ・ソート |
+| テンプレート・提案による初回入力支援 | Templates / Suggestions（Shape of AI） | テンプレーツ／サジェスチョンズ |
+| AI解釈結果の確認表示 | Filters（Shape of AI） | フィルターズ |
+| 保存済み戦略の再利用 | Saved styles（Shape of AI） | セーブド・スタイルズ |
+| LLMプロバイダの切り替え | Model management（Shape of AI） | モデル・マネジメント |
 
 ## エージェント型ワークフローの選び方（05章）
 
@@ -60,3 +68,12 @@
 | Orchestrator-Workers | 必要なサブタスクを事前に予測できず、動的に決めたい |
 | Evaluator-Optimizer | 明確な評価基準があり、反復改善で品質が上がる |
 | Autonomous Agents | 実行経路を事前にコード化できない開放的な問題 |
+
+## AIプロダクトUXパターンの選び方（07章）
+
+| パターン | 向いているケース |
+|---|---|
+| Templates / Suggestions | ユーザーが何を入力すればよいか分からない（空白キャンバス） |
+| Open input / Chained action | 自由記述の質問や、複数ターンにわたる対話が必要 |
+| Filters / Saved styles | AIの解釈結果を確認・再利用したい |
+| Model management | 複数のLLMプロバイダを使い分けたい |

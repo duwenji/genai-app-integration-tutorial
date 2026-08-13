@@ -42,6 +42,12 @@ STEP 5 ──→ Agentic Workflow Patterns（5教材）
 
 STEP 6 ──→ Real World Case Study（2教材）
              既存アプリ11箇所の統合パターン横断分析・自分のアプリへの適用演習
+
+STEP 7 ──→ AI Product UX Patterns（4教材、補足カテゴリ）
+             Shape of AIの残り4カテゴリ（Wayfinders/Prompt Actions/
+             Tuners/Identifiers）に対応するUI/UXレベルの設計パターン。
+             01〜06の呼び出し単位の設計とは独立した観点のため、
+             06完了後の任意のタイミングで読める
 ```
 
 ## 前提知識

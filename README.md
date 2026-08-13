@@ -8,7 +8,7 @@
 [ai-stock-investing-tutorial](https://github.com/duwenji/ai-stock-investing-tutorial/blob/master/README.md) の
 完成版アプリ（`app/`）を随所でケーススタディとして参照します。
 
-**📢 更新状況**: ✅ 01〜06カテゴリ執筆完了
+**📢 更新状況**: ✅ 01〜07カテゴリ執筆完了
 
 - 全体索引: [MASTER-INDEX.md](MASTER-INDEX.md)
 - スタイルガイド: [00_STYLE_GUIDE.md](00_STYLE_GUIDE.md)
@@ -26,6 +26,7 @@
 5. [docs/04-trust-and-safety-ux/00-README.md](docs/04-trust-and-safety-ux/00-README.md) で信頼と安全性のUX設計を学ぶ
 6. [docs/05-agentic-workflow-patterns/00-README.md](docs/05-agentic-workflow-patterns/00-README.md) で複数LLM呼び出しの組み合わせパターンを学ぶ
 7. [docs/06-real-world-case-study/00-README.md](docs/06-real-world-case-study/00-README.md) で実践ケーススタディに取り組む
+8. [docs/07-ai-product-ux-patterns/00-README.md](docs/07-ai-product-ux-patterns/00-README.md) でAIプロダクトのUXパターン（Shape of AI準拠）を学ぶ
 
 ---
 
@@ -38,6 +39,7 @@
 - [docs/04-trust-and-safety-ux/00-README.md](docs/04-trust-and-safety-ux/00-README.md)
 - [docs/05-agentic-workflow-patterns/00-README.md](docs/05-agentic-workflow-patterns/00-README.md)
 - [docs/06-real-world-case-study/00-README.md](docs/06-real-world-case-study/00-README.md)
+- [docs/07-ai-product-ux-patterns/00-README.md](docs/07-ai-product-ux-patterns/00-README.md)
 
 ## 関連教材
 
