@@ -40,14 +40,13 @@ STEP 5 ──→ Agentic Workflow Patterns（5教材）
              Prompt Chaining・Routing・Orchestrator-Workers・
              Evaluator-Optimizer・Autonomous Agents
 
-STEP 6 ──→ Real World Case Study（2教材）
-             既存アプリ11箇所の統合パターン横断分析・自分のアプリへの適用演習
-
-STEP 7 ──→ AI Product UX Patterns（4教材、補足カテゴリ）
+STEP 6 ──→ AI Product UX Patterns（4教材）
              Shape of AIの残り4カテゴリ（Wayfinders/Prompt Actions/
-             Tuners/Identifiers）に対応するUI/UXレベルの設計パターン。
-             01〜06の呼び出し単位の設計とは独立した観点のため、
-             06完了後の任意のタイミングで読める
+             Tuners/Identifiers）に対応するUI/UXレベルの設計パターン
+
+STEP 7 ──→ Real World Case Study（2教材）
+             既存アプリ11箇所の統合パターン横断分析・自分のアプリへの適用演習・
+             01〜06すべての設計判断を一括点検する運用移行前チェックリスト
 ```
 
 ## 前提知識
@@ -64,7 +63,7 @@ STEP 7 ──→ AI Product UX Patterns（4教材、補足カテゴリ）
 1. 特定ドメインに依存しない**一般的な設計パターン**を軸に構成する
 2. 各パターンは、Anthropicの公開資料や実務記事など**外部の確立された呼称**に対応づける
 3. 実例として、`app/`に実装があるものは実ソースコードを優先して引用する。
-   `app/`に実装例が無いパターン（05章の一部が該当）は、その旨を明記した上で
+   `app/`に実装例が無いパターン（05章・06章の一部が該当）は、その旨を明記した上で
    汎用サンプルコードで解説し、抽象論で終わらせない
 4. 最終章では、既存アプリの生成AI活用箇所を横断的に棚卸しし、
    自分のアプリへの適用演習に取り組む

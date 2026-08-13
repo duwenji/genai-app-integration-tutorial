@@ -46,7 +46,7 @@ AI協調型戦略対話・AI投資質問箱）は、単一のAugmented LLM呼び
 表現しづらい構造に対応するため、05章で扱うPrompt Chaining/
 Orchestrator-Workers/Evaluator-Optimizer/Routingパターンへ発展しています
 （詳細は[05章](../05-agentic-workflow-patterns/00-README.md)と
-[06章の横断マッピング](../06-real-world-case-study/01-case-study-map.md)を
+[07章の横断マッピング](../07-real-world-case-study/01-case-study-map.md)を
 参照）。エージェント（実行中にLLM自身が次の行動を決める構成）は、
 `app/`のどの機能でも使っていません。
 

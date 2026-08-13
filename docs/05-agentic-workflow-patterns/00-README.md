@@ -54,4 +54,4 @@ Orchestrator-Workers/Evaluator-Optimizer）では実装の設計判断を掘り�
 
 ---
 
-[← 前へ: 04-trust-and-safety-ux](../04-trust-and-safety-ux/00-README.md) | [次へ: 06-real-world-case-study →](../06-real-world-case-study/00-README.md)
+[← 前へ: 04-trust-and-safety-ux](../04-trust-and-safety-ux/00-README.md) | [次へ: 06-ai-product-ux-patterns →](../06-ai-product-ux-patterns/00-README.md)

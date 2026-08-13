@@ -25,8 +25,8 @@
 4. [docs/03-reliability-and-cost/00-README.md](docs/03-reliability-and-cost/00-README.md) で信頼性・コスト最適化の設計を学ぶ
 5. [docs/04-trust-and-safety-ux/00-README.md](docs/04-trust-and-safety-ux/00-README.md) で信頼と安全性のUX設計を学ぶ
 6. [docs/05-agentic-workflow-patterns/00-README.md](docs/05-agentic-workflow-patterns/00-README.md) で複数LLM呼び出しの組み合わせパターンを学ぶ
-7. [docs/06-real-world-case-study/00-README.md](docs/06-real-world-case-study/00-README.md) で実践ケーススタディに取り組む
-8. [docs/07-ai-product-ux-patterns/00-README.md](docs/07-ai-product-ux-patterns/00-README.md) でAIプロダクトのUXパターン（Shape of AI準拠）を学ぶ
+7. [docs/06-ai-product-ux-patterns/00-README.md](docs/06-ai-product-ux-patterns/00-README.md) でAIプロダクトのUXパターン（Shape of AI準拠）を学ぶ
+8. [docs/07-real-world-case-study/00-README.md](docs/07-real-world-case-study/00-README.md) で実践ケーススタディに取り組む
 
 ---
 
@@ -38,8 +38,8 @@
 - [docs/03-reliability-and-cost/00-README.md](docs/03-reliability-and-cost/00-README.md)
 - [docs/04-trust-and-safety-ux/00-README.md](docs/04-trust-and-safety-ux/00-README.md)
 - [docs/05-agentic-workflow-patterns/00-README.md](docs/05-agentic-workflow-patterns/00-README.md)
-- [docs/06-real-world-case-study/00-README.md](docs/06-real-world-case-study/00-README.md)
-- [docs/07-ai-product-ux-patterns/00-README.md](docs/07-ai-product-ux-patterns/00-README.md)
+- [docs/06-ai-product-ux-patterns/00-README.md](docs/06-ai-product-ux-patterns/00-README.md)
+- [docs/07-real-world-case-study/00-README.md](docs/07-real-world-case-study/00-README.md)
 
 ## 関連教材
 

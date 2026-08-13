@@ -1,6 +1,6 @@
-# 07. AI Product UX Patterns - AIプロダクトのUXパターン
+# 06. AI Product UX Patterns - AIプロダクトのUXパターン
 
-01〜06章が「AIをどう呼び出すか」という統合設計を扱うのに対し、本章は
+01〜05章が「AIをどう呼び出すか」という統合設計を扱うのに対し、本章は
 「ユーザーがAI機能をどう使い始め、どう操作し、どう調整するか」という
 UI/UXレベルの設計パターンを扱います。
 
@@ -44,4 +44,4 @@ Shape of AIのGovernors/Trust Buildersは[04-trust-and-safety-ux](../04-trust-an
 
 ---
 
-[← 前へ: 06-real-world-case-study](../06-real-world-case-study/00-README.md)
+[← 前へ: 05-agentic-workflow-patterns](../05-agentic-workflow-patterns/00-README.md) | [次へ: 07-real-world-case-study →](../07-real-world-case-study/00-README.md)

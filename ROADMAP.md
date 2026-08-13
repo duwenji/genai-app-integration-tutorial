@@ -9,8 +9,8 @@
 | 03. Reliability & Cost | 5 | ✅ 執筆完了 |
 | 04. Trust & Safety UX | 6 | ✅ 執筆完了 |
 | 05. Agentic Workflow Patterns | 5 | ✅ 執筆完了 |
-| 06. Real World Case Study | 2 | ✅ 執筆完了 |
-| 07. AI Product UX Patterns | 4 | ✅ 執筆完了 |
+| 06. AI Product UX Patterns | 4 | ✅ 執筆完了 |
+| 07. Real World Case Study | 2 | ✅ 執筆完了 |
 
 ## 今後の拡張予定
 

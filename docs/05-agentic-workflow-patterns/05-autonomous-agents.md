@@ -101,4 +101,4 @@ def run_agent_loop(user_request: str, max_steps: int = 5) -> str:
 
 ---
 
-[← 前へ: Evaluator-Optimizer](04-evaluator-optimizer.md) | [次へ: 06-real-world-case-study →](../06-real-world-case-study/00-README.md)
+[← 前へ: Evaluator-Optimizer](04-evaluator-optimizer.md) | [次へ: 06-ai-product-ux-patterns →](../06-ai-product-ux-patterns/00-README.md)

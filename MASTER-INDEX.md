@@ -49,15 +49,15 @@
 - [docs/05-agentic-workflow-patterns/04-evaluator-optimizer.md](docs/05-agentic-workflow-patterns/04-evaluator-optimizer.md) - 生成→評価→改善のループを設計する
 - [docs/05-agentic-workflow-patterns/05-autonomous-agents.md](docs/05-agentic-workflow-patterns/05-autonomous-agents.md) - ワークフローと自律エージェントの違いと判断基準
 
-## 06. Real World Case Study
-- [docs/06-real-world-case-study/00-README.md](docs/06-real-world-case-study/00-README.md)
-- [docs/06-real-world-case-study/01-case-study-map.md](docs/06-real-world-case-study/01-case-study-map.md) - 既存アプリ11箇所の統合パターン横断マッピング
-- [docs/06-real-world-case-study/02-exercise-apply-to-your-app.md](docs/06-real-world-case-study/02-exercise-apply-to-your-app.md) - 自分のアプリへの適用演習
-- [docs/06-real-world-case-study/03-operations-checklist.md](docs/06-real-world-case-study/03-operations-checklist.md) - 運用移行前チェックリスト
+## 06. AI Product UX Patterns
+- [docs/06-ai-product-ux-patterns/00-README.md](docs/06-ai-product-ux-patterns/00-README.md)
+- [docs/06-ai-product-ux-patterns/01-onboarding-and-wayfinding.md](docs/06-ai-product-ux-patterns/01-onboarding-and-wayfinding.md) - 初回プロンプト体験の空白キャンバス対策
+- [docs/06-ai-product-ux-patterns/02-prompt-action-patterns.md](docs/06-ai-product-ux-patterns/02-prompt-action-patterns.md) - ユーザーがAIに指示する各種アクション
+- [docs/06-ai-product-ux-patterns/03-tuning-and-context-control.md](docs/06-ai-product-ux-patterns/03-tuning-and-context-control.md) - フィルタ・プリセット・モデル選択によるプロンプト調整
+- [docs/06-ai-product-ux-patterns/04-ai-identity-and-branding.md](docs/06-ai-product-ux-patterns/04-ai-identity-and-branding.md) - AIの存在をUI上で識別可能にする表現
 
-## 07. AI Product UX Patterns
-- [docs/07-ai-product-ux-patterns/00-README.md](docs/07-ai-product-ux-patterns/00-README.md)
-- [docs/07-ai-product-ux-patterns/01-onboarding-and-wayfinding.md](docs/07-ai-product-ux-patterns/01-onboarding-and-wayfinding.md) - 初回プロンプト体験の空白キャンバス対策
-- [docs/07-ai-product-ux-patterns/02-prompt-action-patterns.md](docs/07-ai-product-ux-patterns/02-prompt-action-patterns.md) - ユーザーがAIに指示する各種アクション
-- [docs/07-ai-product-ux-patterns/03-tuning-and-context-control.md](docs/07-ai-product-ux-patterns/03-tuning-and-context-control.md) - フィルタ・プリセット・モデル選択によるプロンプト調整
-- [docs/07-ai-product-ux-patterns/04-ai-identity-and-branding.md](docs/07-ai-product-ux-patterns/04-ai-identity-and-branding.md) - AIの存在をUI上で識別可能にする表現
+## 07. Real World Case Study
+- [docs/07-real-world-case-study/00-README.md](docs/07-real-world-case-study/00-README.md)
+- [docs/07-real-world-case-study/01-case-study-map.md](docs/07-real-world-case-study/01-case-study-map.md) - 既存アプリ11箇所の統合パターン横断マッピング
+- [docs/07-real-world-case-study/02-exercise-apply-to-your-app.md](docs/07-real-world-case-study/02-exercise-apply-to-your-app.md) - 自分のアプリへの適用演習
+- [docs/07-real-world-case-study/03-operations-checklist.md](docs/07-real-world-case-study/03-operations-checklist.md) - 運用移行前チェックリスト
