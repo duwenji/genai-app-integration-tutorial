@@ -8,52 +8,54 @@
 
 ## 概要
 
-ユーザーが何も入力されていない画面（空白キャンバス）を前にすると、
-何を入力すればいいか分からず離脱しがちです。本教材では、[Shape of
-AI](https://www.shapeof.ai/)のWayfindersカテゴリ8パターン（Gallery, Follow
-up, Initial CTA, Nudges, Prompt details, Randomize, Suggestions,
-Templates）を、「空白キャンバス対策」と「入力ガイダンス」の2グループに
-整理して扱います。
+チャット欄や自由記述の入力欄だけが置かれた画面を見て、「何を書けばいいのか分からない」と感じた経験はないでしょうか。
+これは「空白キャンバス問題」と呼ばれる、AI機能に特有のUX課題です。
+文章作成ツールの真っ白なページと同じように、入力欄が何も書かれていないとそれだけで心理的なハードルが上がります。
+対策がなければ、ユーザーは何も入力しないまま画面を離れてしまいます（離脱）。
+
+Shape of AIでは、この「最初の一歩をどう案内するか」に関わるパターン群をWayfinders（道案内役）と呼びます。
+本教材では、[Shape of AI](https://www.shapeof.ai/)のWayfindersカテゴリ8パターン（Gallery, Follow up, Initial CTA, Nudges, Prompt details, Randomize, Suggestions, Templates）を、「空白キャンバス対策」と「入力ガイダンス」の2グループに整理して扱います。
 
 ## 位置づけ
 
-06章の1番目の教材です。ここで学ぶ導線設計は、02教材で扱う「入力後の
-アクション」の前段階、つまりユーザーが最初のプロンプトを送るまでの
-体験を扱います。
+06章の1番目の教材です。
+ここで学ぶ導線設計は、02教材で扱う「入力後のアクション」の前段階、つまりユーザーが最初のプロンプトを送るまでの体験を扱います。
 
 ## 主要概念・設計判断の解説
 
 ### 空白キャンバス対策: Templates・Suggestions
 
-AI戦略ビルダーの投資アイデア入力欄は、あらかじめ用意した
-[Templates](https://www.shapeof.ai/patterns/templates)（テンプレート
-ボタン）と、その日の値上がり銘柄から動的に生成する
-[Suggestions](https://www.shapeof.ai/patterns/suggestions)（提案）の
-両方を用意し、何も思いつかないユーザーでも入力を始められるようにして
-います。
+AI戦略ビルダーの投資アイデア入力欄は、あらかじめ用意した[Templates](https://www.shapeof.ai/patterns/templates)（テンプレートボタン）と、その日の値上がり銘柄から動的に生成する[Suggestions](https://www.shapeof.ai/patterns/suggestions)（提案）の両方を用意し、何も思いつかないユーザーでも入力を始められるようにしています。
 
 ### 入力ガイダンス: Initial CTA・Follow up
 
-投資アイデア入力欄自体は、プレースホルダー付きの大きな`st.text_area`
-（[Initial CTA](https://www.shapeof.ai/patterns/initial-cta)）です。
-入力後、AIは曖昧なアイデアに対してすぐ確定させず、財務指標や閾値を
-具体化する質問・提案を返します。これは[Follow up](https://www.shapeof.ai/patterns/follow-up)
-（初期プロンプトが不十分な場合に追加情報を引き出す）に対応します。
+投資アイデア入力欄自体は、プレースホルダー付きの大きな`st.text_area`（[Initial CTA](https://www.shapeof.ai/patterns/initial-cta)）です。
+入力後、AIは曖昧なアイデアに対してすぐ確定させず、財務指標や閾値を具体化する質問・提案を返します。
+これは[Follow up](https://www.shapeof.ai/patterns/follow-up)（初期プロンプトが不十分な場合に追加情報を引き出す）に対応します。
+
+### 8パターンの比較
+
+どのパターンをいつ使うべきか、向いている場面とつまずきやすい点を整理すると次のとおりです。
+
+| パターン | 向いている場面 | つまずきやすい点 |
+|---|---|---|
+| Templates | 典型的な入力が少数のパターンに絞れる | 選択肢が多すぎると逆に選べなくなる |
+| Suggestions | ユーザー固有のデータから動的に提案できる | 提案の生成自体に処理コストがかかる |
+| Initial CTA | 自由入力を許しつつ最初の一押しが必要 | プレースホルダーだけでは具体例として弱い |
+| Follow up | 最初の入力が曖昧になりがち | 質問を重ねすぎるとユーザーが疲れる |
+| Gallery（app/未実装） | 実例を見て使い方をイメージしてほしい | 実例が古いとかえって信頼を損なう |
+| Nudges（app/未実装） | 機能の存在に気づかせたい | 出しすぎると通知疲れを招く |
+| Prompt details（app/未実装） | 裏側の処理を見せて安心させたい | 情報量が多いと初心者には逆効果 |
+| Randomize（app/未実装） | 低リスクでとにかく試させたい | 出力が的外れだとかえって離脱を招く |
 
 ### `app/`に実装が無い観点: Gallery・Nudges・Prompt details・Randomize
 
-[Gallery](https://www.shapeof.ai/patterns/gallery)（生成例・プロンプト例の
-共有）・[Nudges](https://www.shapeof.ai/patterns/nudges)（利用可能な操作への
-気づきを促す）・[Prompt details](https://www.shapeof.ai/patterns/prompt-details)
-（裏側で実際に何が起きているかを見せる）・[Randomize](https://www.shapeof.ai/patterns/randomize)
-（低い障壁で試させるランダム生成）は、`app/`に該当する実装がありません。
-本教材のサンプルコードは`app/`に実装例が無いため、汎用サンプルコードで
-解説します。
+[Gallery](https://www.shapeof.ai/patterns/gallery)（生成例・プロンプト例の共有）・[Nudges](https://www.shapeof.ai/patterns/nudges)（利用可能な操作への気づきを促す）・[Prompt details](https://www.shapeof.ai/patterns/prompt-details)（裏側で実際に何が起きているかを見せる）・[Randomize](https://www.shapeof.ai/patterns/randomize)（低い障壁で試させるランダム生成）は、`app/`に該当する実装がありません。
+本教材のサンプルコードは`app/`に実装例が無いため、汎用サンプルコードで解説します。
 
 ## 実ソースコード（Python / プロンプト例、出典パス明記）
 
-出典: `ai-stock-investing-tutorial/app/app_tabs/strategy_builder_tab.py`
-（Templates）
+出典: `ai-stock-investing-tutorial/app/app_tabs/strategy_builder_tab.py`（Templates）
 
 ```python
 _TEMPLATES = {
@@ -70,8 +72,7 @@ for col, (label, template_text) in zip(template_cols, _TEMPLATES.items()):
             st.rerun()
 ```
 
-出典: `ai-stock-investing-tutorial/app/app_tabs/strategy_builder_tab.py`
-（Suggestions、業種ローテーション分析からの提案）
+出典: `ai-stock-investing-tutorial/app/app_tabs/strategy_builder_tab.py`（Suggestions、業種ローテーション分析からの提案）
 
 ```python
 watchlist = build_watchlist_from_rotation(...)
@@ -84,8 +85,7 @@ if st.button("この案をアイデア欄に反映", key="strategy_apply_watchli
     st.rerun()
 ```
 
-出典: `ai-stock-investing-tutorial/app/app_tabs/strategy_builder_tab.py`
-（Initial CTA）
+出典: `ai-stock-investing-tutorial/app/app_tabs/strategy_builder_tab.py`（Initial CTA）
 
 ```python
 st.text_area(
@@ -100,8 +100,7 @@ if st.button("対話を始める", disabled=not st.session_state.get("strategy_i
     ]
 ```
 
-出典: `ai-stock-investing-tutorial/app/prompt_patterns/strategy_dialogue.py`
-（Follow up、ステップ1の指示文）
+出典: `ai-stock-investing-tutorial/app/prompt_patterns/strategy_dialogue.py`（Follow up、ステップ1の指示文）
 
 ```text
 【ステップ1: アイデアの定量化】
@@ -112,8 +111,7 @@ if st.button("対話を始める", disabled=not st.session_state.get("strategy_i
 このステップでは、説明文以外は出力しないでください。JSON形式は使わないでください。
 ```
 
-汎用サンプルコード（`app/`に実装例が無いため、Gallery・Randomizeを
-解説する架空のコード）:
+汎用サンプルコード（`app/`に実装例が無いため、Gallery・Randomizeを解説する架空のコード）:
 
 ```python
 def render_gallery_and_randomize(examples: list[dict]) -> str | None:
@@ -127,6 +125,20 @@ def render_gallery_and_randomize(examples: list[dict]) -> str | None:
         import random
         return random.choice(examples)["prompt"]
     return None
+```
+
+汎用サンプルコード（`app/`に実装例が無いため、Nudges・Prompt detailsを解説する架空のコード）:
+
+```python
+def render_nudge_and_prompt_details(has_used_feature_before: bool) -> None:
+    """初回利用者にだけ機能の存在を知らせる（Nudges）。加えて、AIに
+    実際にどんな情報を渡しているか（Prompt details）を折りたたみで
+    開示する。
+    """
+    if not has_used_feature_before:
+        st.info("ヒント: 業種ローテーション分析から提案を受け取れます。")
+    with st.expander("AIに渡している情報を見る"):
+        st.caption("入力文・選択中の業種一覧・過去の対話履歴をAIに渡しています。")
 ```
 
 ```mermaid
@@ -145,19 +157,24 @@ flowchart LR
     H -->|No| J["処理継続（02教材へ）"]
 ```
 
+この図の分岐が示すように、Templates・Suggestions・Galleryは経路が違っても最終的にはすべて同じInitial CTA（入力欄）へ集約されます。
+入力後にAIが曖昧さを検知した場合は、Follow upで入力欄まで押し戻す設計にすることで、ユーザーは常に同じ場所を見ていればよくなります。
+
 ## 演習課題
 
-1. `_TEMPLATES`のようなテンプレートボタンと、業種ローテーションからの
-   動的な提案（Suggestions）は、どちらも入力欄を埋める点で似ています。
+1. `_TEMPLATES`のようなテンプレートボタンと、業種ローテーションからの動的な提案（Suggestions）は、どちらも入力欄を埋める点で似ています。
    ユーザー体験上の違いを1つ挙げてください。
-2. 自分のアプリでAI機能への入り口を1つ想定し、Templates・Suggestions・
-   Initial CTAのうちどれを使うべきか、理由とともに設計してください。
+2. 自分のアプリでAI機能への入り口を1つ想定し、設計してください。
+   1. 想定する画面・機能を1つ書き出してください。
+   2. 上の比較表を参考に、Templates・Suggestions・Initial CTAのうちどれが向いているか候補を挙げてください。
+   3. 候補を1つに絞り、選んだ理由を1〜2文で書いてください。
 
 ## 理解度チェック
 
 - [ ] 空白キャンバス問題とは何か説明できる
 - [ ] `app/`のTemplates・Suggestions・Initial CTA・Follow upの実装を説明できる
 - [ ] Gallery・Nudges・Prompt details・Randomizeの目的をそれぞれ説明できる
+- [ ] Wayfinders各パターンの「向いている場面」「つまずきやすい点」を説明できる
 
 ---
 
